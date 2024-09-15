@@ -1,0 +1,42 @@
+# Compiled object files
+*.o
+*.obj
+*.so
+*.a
+*.lib
+*.dll
+*.exe
+*.out
+
+# Build directories
+/build/
+/bin/
+/obj/
+/Debug/
+/Release/
+
+# Code::Blocks project files
+*.layout
+*.depend
+*.layout.gcov
+
+# Visual Studio Code project files
+.vscode/
+*.code-workspace
+
+# CLion (CMake) project files
+.idea/
+cmake-build-*/
+
+# Makefile generated files
+Makefile
+CMakeLists.txt.user
+CMakeCache.txt
+
+# Debugging files
+*.log
+*.gch
+
+# System files
+.DS_Store
+Thumbs.db
