@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1728328280 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\main.c
+	<stdio.h>
+	<stdlib.h>
+	"menuBroker.h"
+	"structs.h"
+	"constantes.h"
+	"interfacesGraf.h"
+
+1728328672 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\menubroker.h
+	"structs.h"
+	"constantes.h"
+
+1728278126 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\structs.h
+
+1728325839 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\constantes.h
+
+1728278126 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\interfacesgraf.h
+
