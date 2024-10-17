@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1728328280 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\main.c
+1729201801 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\main.c
 	<stdio.h>
 	<stdlib.h>
 	"menuBroker.h"
@@ -7,13 +7,27 @@
 	"constantes.h"
 	"interfacesGraf.h"
 
-1728328672 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\menubroker.h
+1729184920 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\menubroker.h
 	"structs.h"
 	"constantes.h"
 
-1728278126 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\structs.h
+1729194061 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\structs.h
+	"constantes.h"
 
-1728325839 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\constantes.h
+1729193277 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\constantes.h
 
 1728278126 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\interfacesgraf.h
+
+1729202051 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\menucliente.c
+	<stdio.h>
+	<stdlib.h>
+	"menuBroker.h"
+	"structs.h"
+	"constantes.h"
+
+1729185067 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\menubroker.c
+	<stdio.h>
+	<stdlib.h>
+	"structs.h"
+	"constantes.h"
 

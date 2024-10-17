@@ -40,8 +40,14 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="menuBroker.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="menuBroker.h">
 			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="menuCliente.c">
+			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="menuCliente.h">
 			<Option target="&lt;{~None~}&gt;" />

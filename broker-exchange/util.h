@@ -4,8 +4,7 @@
 void *obtenerMemoria(size_t size);
 char *stringDinamico(char *origen);
 void liberar_memoria(void *puntero);
-int esImpar(int num);
-int esPar(int num);
+
 
 void *obtenerMemoria(size_t size)
 {

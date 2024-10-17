@@ -1,6 +1,7 @@
 #ifndef STRUCTS_H_INCLUDED
 #define STRUCTS_H_INCLUDED
 
+#include "constantes.h"
 
 typedef struct {
     char id_ticker[10];
@@ -23,7 +24,7 @@ typedef struct {
     char cuit[15];
     char password[20];
     float saldo_cuenta;
-    Inversion inversiones[500];
+    Inversion inversiones[MAX_INVERSIONES];
     int num_inversiones;
 } Cliente;
 
