@@ -378,12 +378,18 @@ void menuBroker() {
                 filtrarOperacionesPorIDTicker();
                 break;
             case 9:
+                mostrarClientes();
+                break;
+            case 10:
+                mostrarEmpresas();
+                break;
+            case 11:
                 printf("Volviendo al menú principal...\n");
                 break;
             default:
                 printf("Opción no válida. Inténtalo nuevamente.\n");
         }
-    } while (opcion != 9);
+    } while (opcion != 11);
 }
 
 // Función que muestra el menú del broker
@@ -397,5 +403,7 @@ void mostrarMenuBroker() {
     printf("6. Modificación de empresas\n");
     printf("7. Filtrar operaciones por cliente\n");
     printf("8. Filtrar operaciones por ID ticker\n");
-    printf("9. Volver al menú principal\n");
+    printf("9. Mostrar Clientes\n");
+    printf("10. Mostrar Empresas\n");
+    printf("11. Volver al menú principal\n");
 }

@@ -6,7 +6,7 @@ void realizarInversion();
 void verRendimiento();
 void cargarSaldo();
 void extraerSaldo();
-void verPortafolio();
+void verPortafolio(int clienteIndex);
 
 void comprarVenderAcciones();
 void comprarAcciones(int indiceCliente);
@@ -16,8 +16,12 @@ void rendimientoDiario();
 void rendimientoHistorico();
 void listarActivos();
 void rendimientoPorActivo();
-void menuCliente();  // Prototipo de la función del menú de Cliente
+void menuCliente(int clienteIndex);  // Prototipo de la función del menú de Cliente
 
+
+//Cargar / Extraer saldo
+void cargarSaldo(int indiceCliente);
+void extraerSaldo(int indiceCliente);
 
 
 #endif // MENUCLIENTE_H_INCLUDED

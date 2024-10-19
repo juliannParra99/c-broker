@@ -12,55 +12,48 @@ extern int numEmpresas;
 
 
 // Función del menú del Cliente
-void menuCliente() {
+void menuCliente(int clienteIndex) {
     int opcion;
 
     do {
         printf("\n--- Menú Cliente ---\n");
+        printf("SALDO ACTUAL: %.2f \n", listaClientes[clienteIndex].saldo_cuenta );
         printf("1. Realizar inversión\n");
-        printf("2. Mostrar listado de empresas disponibles\n");
-        printf("3. Comprar o vender acciones\n");
-        printf("4. Ver rendimiento\n");
-        printf("5. Cargar saldo\n");
-        printf("6. Extraer saldo\n");
-        printf("7. Ver portafolio\n");
-        printf("8. Volver al menú principal\n");
+        printf("2. Ver rendimiento\n");
+        printf("3. Cargar saldo:\n");
+        printf("4. Extraer saldo\n");
+        printf("5. Ver portafolio\n");
+        printf("6. Volver al menú principal\n");
         printf("Seleccione una opción: ");
         scanf("%d", &opcion);
 
         switch(opcion) {
             case 1:
-                realizarInversion();
+                realizarInversion(clienteIndex);
                 break;
             case 2:
-                mostrarEmpresas();
-                break;
-            case 3:
-                comprarVenderAcciones();
-                break;
-            case 4:
 //                verRendimiento();
                 break;
+            case 3:
+                cargarSaldo(clienteIndex);
+                break;
+            case 4:
+                extraerSaldo(clienteIndex);
+                break;
             case 5:
-//                cargarSaldo();
+                verPortafolio(clienteIndex);
                 break;
             case 6:
-//                extraerSaldo();
-                break;
-            case 7:
-//                verPortafolio();
-                break;
-            case 8:
                 printf("Volviendo al menú principal...\n");
                 break;
             default:
                 printf("Opción inválida. Intente de nuevo.\n");
         }
-    } while (opcion != 8);
+    } while (opcion != 6);
 }
 
 // Función para realizar una inversión
-void realizarInversion() {
+void realizarInversion(int clienteIndex) {
     int subopcion;
     do {
         printf("\n--- Realizar Inversión ---\n");
@@ -76,10 +69,10 @@ void realizarInversion() {
                 mostrarEmpresas();
                 break;
             case 2:
-                comprarAcciones(0);
+                comprarAcciones(clienteIndex);
                 break;
             case 3:
-                venderAcciones();
+                venderAcciones(clienteIndex);
                 break;
             case 4:
                 printf("Volviendo al menú de cliente...\n");
@@ -91,8 +84,8 @@ void realizarInversion() {
 }
 
 //
-void comprarAcciones(int indiceCliente) {
-    if (listaClientes[indiceCliente].saldo_cuenta <= 0) {
+void comprarAcciones(int clienteIndex) {
+    if (listaClientes[clienteIndex].saldo_cuenta <= 0) {
         printf("No puede realizar operaciones, su saldo de cuenta es insuficiente.\n");
         return;
     }
@@ -113,13 +106,13 @@ void comprarAcciones(int indiceCliente) {
 
             float precioTotal = cantidadAcciones * listaEmpresas[i].precio_actual;
 
-            if (listaClientes[indiceCliente].saldo_cuenta >= precioTotal) {
+            if (listaClientes[clienteIndex].saldo_cuenta >= precioTotal) {
                 int inversionEncontrada = 0;
 
                 // Verificar si el cliente ya tiene acciones de esta empresa
-                for (int j = 0; j < listaClientes[indiceCliente].num_inversiones; j++) {
-                    if (strcmp(listaClientes[indiceCliente].inversiones[j].id_ticker, idTicker) == 0) {
-                        listaClientes[indiceCliente].inversiones[j].cantidad_acciones += cantidadAcciones;
+                for (int j = 0; j < listaClientes[clienteIndex].num_inversiones; j++) {
+                    if (strcmp(listaClientes[clienteIndex].inversiones[j].id_ticker, idTicker) == 0) {
+                        listaClientes[clienteIndex].inversiones[j].cantidad_acciones += cantidadAcciones;
                         inversionEncontrada = 1;
                         break;
                     }
@@ -131,11 +124,16 @@ void comprarAcciones(int indiceCliente) {
                     strcpy(nuevaInversion.id_ticker, idTicker);
                     nuevaInversion.cantidad_acciones = cantidadAcciones;
                     nuevaInversion.precio_compra = listaEmpresas[i].precio_actual;
-                    listaClientes[indiceCliente].inversiones[listaClientes[indiceCliente].num_inversiones] = nuevaInversion;
-                    listaClientes[indiceCliente].num_inversiones++;
+
+                    // Capturar la fecha actual
+                    printf("Ingrese la fecha de compra (YYYY-MM-DD): ");
+                    scanf("%s", nuevaInversion.fecha);  // O puedes capturar la fecha automáticamente
+
+                    listaClientes[clienteIndex].inversiones[listaClientes[clienteIndex].num_inversiones] = nuevaInversion;
+                    listaClientes[clienteIndex].num_inversiones++;
                 }
 
-                listaClientes[indiceCliente].saldo_cuenta -= precioTotal;
+                listaClientes[clienteIndex].saldo_cuenta -= precioTotal;
                 printf("Compra realizada con éxito.\n");
             } else {
                 printf("Saldo insuficiente para realizar la compra.\n");
@@ -148,6 +146,8 @@ void comprarAcciones(int indiceCliente) {
         printf("Empresa no encontrada.\n");
     }
 }
+
+
 
 void venderAcciones(int indiceCliente) {
     char idTicker[10];
@@ -193,7 +193,50 @@ void venderAcciones(int indiceCliente) {
     }
 }
 
+//primera manera
+void verPortafolio(int clienteIndex) {
+    if (listaClientes[clienteIndex].num_inversiones == 0) {
+        printf("El cliente no tiene inversiones en su portafolio.\n");
+        return;
+    }
 
+    printf("Listado de Activos del Cliente: %s\n", listaClientes[clienteIndex].nombre);
+    printf("-------------------------------------------------------------------------------\n");
+    printf("%-10s %-20s %-15s %-15s %-15s %-15s %-15s\n", "ID Ticker", "Nombre Empresa", "Acciones", "Precio Compra", "Precio Actual", "Valor Compra", "Valor Actual");
+
+    // Recorrer todas las inversiones del cliente
+    for (int i = 0; i < listaClientes[clienteIndex].num_inversiones; i++) {
+        Inversion inv = listaClientes[clienteIndex].inversiones[i];
+        char nombreEmpresa[50] = "Desconocido"; // Valor predeterminado si no se encuentra la empresa
+        float precioActual = 0.0; // Precio actual de la empresa (si se encuentra)
+
+        // Buscar el nombre de la empresa y su precio actual con base en el ID Ticker
+        for (int j = 0; j < numEmpresas; j++) {
+            if (strcmp(listaEmpresas[j].id_ticker, inv.id_ticker) == 0) {
+                strcpy(nombreEmpresa, listaEmpresas[j].nombre);  // Copiar nombre de la empresa
+                precioActual = listaEmpresas[j].precio_actual;   // Obtener el precio actual de la empresa
+                break;
+            }
+        }
+
+        // Calcular el valor total de la inversión al precio de compra
+        float valorCompra = inv.cantidad_acciones * inv.precio_compra;
+
+        // Calcular el valor total de la inversión al precio actual
+        float valorActual = inv.cantidad_acciones * precioActual;
+
+        // Mostrar la información de la inversión
+        printf("%-10s %-20s %-15d %-15.2f %-15.2f %-15.2f %-15.2f\n",
+               inv.id_ticker, nombreEmpresa, inv.cantidad_acciones,
+               inv.precio_compra, precioActual, valorCompra, valorActual);
+    }
+
+    printf("-------------------------------------------------------------------------------\n");
+}
+
+
+////
+//// no se usa en ningun lado esta funcion
 void comprarVenderAcciones() {
     int opcion;
 
@@ -208,3 +251,40 @@ void comprarVenderAcciones() {
         printf("Opción no válida.\n");
     }
 }
+
+////
+////
+////
+///
+//Cargar saldo, extraer saldo;
+void cargarSaldo(int indiceCliente) {
+    float monto;
+
+    printf("Ingrese el monto que desea cargar: ");
+    scanf("%f", &monto);
+
+    if (monto > 0) {
+        listaClientes[indiceCliente].saldo_cuenta += monto;
+        printf("Saldo cargado con éxito. Su saldo actual es: %.2f\n", listaClientes[indiceCliente].saldo_cuenta);
+    } else {
+        printf("El monto debe ser mayor a cero.\n");
+    }
+}
+
+// Función para extraer saldo
+void extraerSaldo(int indiceCliente) {
+    float monto;
+
+    printf("Ingrese el monto que desea extraer: ");
+    scanf("%f", &monto);
+
+    if (monto > 0 && monto <= listaClientes[indiceCliente].saldo_cuenta) {
+        listaClientes[indiceCliente].saldo_cuenta -= monto;
+        printf("Extracción realizada con éxito. Su saldo actual es: %.2f\n", listaClientes[indiceCliente].saldo_cuenta);
+    } else if (monto > listaClientes[indiceCliente].saldo_cuenta) {
+        printf("Saldo insuficiente. No puede extraer más de lo que tiene.\n");
+    } else {
+        printf("El monto debe ser mayor a cero.\n");
+    }
+}
+

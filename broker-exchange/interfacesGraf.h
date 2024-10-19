@@ -1,59 +1,93 @@
 #ifndef INTERFACESGRAF_H_INCLUDED
 #define INTERFACESGRAF_H_INCLUDED
 
+extern int numClientes;
+extern Cliente listaClientes[MAX_CLIENTES];
+
 void login();
 void loginValidation(int role );
 
+// Implementación de la función de login
 void login()
 {
     int role;
-    printf("Login: \n");
-    printf("1.Admin\n");
-    printf("2.User\n");
-    printf("3. Exit\n");
-    scanf("%d", &role);
-
-    while(role <= 0 || role> 3)
-    {
-        printf("Role must be between 1 to 3\n");
+    do {
         printf("Login: \n");
-        printf("1.Admin\n");
-        printf("2.User\n");
+        printf("1. Admin\n");
+        printf("2. User\n");
         printf("3. Exit\n");
+        printf("Seleccione una opción: ");
         scanf("%d", &role);
-    }
 
-    loginValidation(role);
+        // Validar que el rol esté dentro del rango válido
+        while (role <= 0 || role > 3) {
+            printf("Role must be between 1 to 3\n");
+            printf("Login: \n");
+            printf("1. Admin\n");
+            printf("2. User\n");
+            printf("3. Exit\n");
+            scanf("%d", &role);
+        }
+
+        // Validar y ejecutar la opción seleccionada
+        loginValidation(role);
+
+    } while (role != 3); // Repetir hasta que el usuario elija salir (opción 3)
+
+    printf("Programa finalizado.\n");
 }
 
+
 //
-void loginValidation(int role )
+// Implementación de la función loginValidation
+void loginValidation(int role)
 {
-    char userName[20];
+    switch(role) {
+        case 1:
+            printf("Bienvenido Admin\n");
+            menuBroker(); // Si es Admin, ejecutar el menú del Broker
+            break;
+        case 2: {
+            int clienteIndex = validarCliente();
+            if (clienteIndex >= 0) { // Si el cliente es validado correctamente
+                printf("Bienvenido Cliente\n");
+                menuCliente(clienteIndex); // Pasar el índice del cliente validado
+            } else {
+                printf("Error: Email o contraseña incorrectos.\n");
+            }
+            break;
+        }
+        case 3:
+            printf("Saliendo...\n");
+            exit(0); // Finalizar el programa si elige salir
+            break;
+        default:
+            printf("Opción inválida.\n");
+    }
+}
+
+// Función para validar las credenciales del cliente
+// Función para validar las credenciales del cliente
+int validarCliente()
+{
+    char email[50];
     char password[20];
 
-    if (role == 1) {
-        printf("Login: Admin\n");
-        printf("User Name: ");
-        scanf("%19s", userName);
+    // Solicitar el email y contraseña del cliente
+    printf("Ingrese su email: ");
+    scanf("%s", email);
+    printf("Ingrese su contraseña: ");
+    scanf("%s", password);
 
-        printf("Password: ");
-        scanf("%19s", password);
-
-        // development
-        printf("Nombre de Usuario: %s\n", userName);
-        printf("Contraseña: %s\n", password);
-    } else {
-        printf("Login: User\n");
-        printf("User Name: ");
-        scanf("%19s", userName);
-        printf("Password: ");
-        scanf("%19s", password);  // Leer entrada del usuario
-
-        // development
-        printf("Nombre de Usuario: %s\n", userName);
-        printf("Contraseña: %s\n", password);
+    // Buscar al cliente en la lista
+    for (int i = 0; i < numClientes; i++) {
+        if (strcmp(listaClientes[i].email, email) == 0 && strcmp(listaClientes[i].password, password) == 0) {
+            printf("Login exitoso para el cliente: %s\n", listaClientes[i].nombre);
+            return i; // Devolver el índice del cliente
+        }
     }
+
+    return -1; // Login fallido
 }
 
 #endif // INTERFACESGRAF_H_INCLUDED

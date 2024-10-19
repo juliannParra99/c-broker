@@ -9,6 +9,7 @@
 
 //// Ejemplos demostracion
 void empresaAgregarModificarBorrar();
+void ejemploComprarCargarExtraerSaldo();
 
 ////
 
@@ -32,9 +33,9 @@ int main()
     // Inicializar clientes
     listaClientes[0] = (Cliente) {
         "Juan Perez",
-        "juan.perez@email.com",
+        "juan@gmail.com",
         "20345678901",
-        "password123",
+        "1234",//password
         15000.50,
         {}, // Inicialización vacía para inversiones
         0   // num_inversiones
@@ -64,10 +65,9 @@ int main()
     numEmpresas += 3;
 
 
-    // Muestra de datos
-    mostrarClientes();
-    mostrarEmpresas();
-    //login();
+
+
+    login();
     //menuBroker();
 
     //empresaAgregarModificarBorrar();
@@ -97,5 +97,20 @@ void empresaAgregarModificarBorrar()
     bajaEmpresa();
     mostrarEmpresas();
 }
+
+//Ejemplo :
+void ejemploComprarCargarExtraerSaldo()
+{
+     // Muestra de datos
+    mostrarClientes();
+    mostrarEmpresas();
+    comprarVenderAcciones();
+    mostrarClientes();
+    cargarSaldo(0);
+    mostrarClientes();
+    extraerSaldo(0);
+}
+
+
 
 
