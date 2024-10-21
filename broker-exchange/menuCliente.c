@@ -149,47 +149,69 @@ void comprarAcciones(int clienteIndex) {
 
 
 
-void venderAcciones(int indiceCliente) {
+void venderAcciones(int clienteIndex) {
+    if (listaClientes[clienteIndex].num_inversiones == 0) {
+        printf("No tiene inversiones para vender.\n");
+        return;
+    }
+
     char idTicker[10];
     int cantidadAcciones;
-    int inversionEncontrada = 0;
+    int empresaEncontrada = 0;
 
-    printf("Ingrese el ID Ticker de la empresa: ");
+    printf("Ingrese el ID Ticker de la empresa de la que desea vender acciones: ");
     scanf("%s", idTicker);
 
-    for (int i = 0; i < listaClientes[indiceCliente].num_inversiones; i++) {
-        if (strcmp(listaClientes[indiceCliente].inversiones[i].id_ticker, idTicker) == 0) {
-            inversionEncontrada = 1;
+    // Buscar la empresa
+    for (int i = 0; i < numEmpresas; i++) {
+        if (strcmp(listaEmpresas[i].id_ticker, idTicker) == 0) {
+            empresaEncontrada = 1;
 
-            printf("Ingrese la cantidad de acciones a vender: ");
-            scanf("%d", &cantidadAcciones);
+            // Buscar si el cliente tiene acciones de esta empresa
+            int inversionEncontrada = 0;
+            for (int j = 0; j < listaClientes[clienteIndex].num_inversiones; j++) {
+                if (strcmp(listaClientes[clienteIndex].inversiones[j].id_ticker, idTicker) == 0) {
+                    inversionEncontrada = 1;
 
-            if (cantidadAcciones <= listaClientes[indiceCliente].inversiones[i].cantidad_acciones) {
-                listaClientes[indiceCliente].inversiones[i].cantidad_acciones -= cantidadAcciones;
+                    printf("Ingrese la cantidad de acciones a vender: ");
+                    scanf("%d", &cantidadAcciones);
 
-                // Obtener el valor de venta basado en el precio actual
-                float ganancia = cantidadAcciones * listaEmpresas[i].precio_actual;
-                listaClientes[indiceCliente].saldo_cuenta += ganancia;
+                    if (cantidadAcciones <= listaClientes[clienteIndex].inversiones[j].cantidad_acciones) {
+                        // Calcular el monto total de la venta
+                        float precioTotal = cantidadAcciones * listaEmpresas[i].precio_actual;
 
-                printf("Venta realizada con éxito. Ganancia: %.2f\n", ganancia);
+                        // Reducir las acciones que tiene el cliente
+                        listaClientes[clienteIndex].inversiones[j].cantidad_acciones -= cantidadAcciones;
 
-                // Si el cliente vendió todas las acciones, eliminar la inversión
-                if (listaClientes[indiceCliente].inversiones[i].cantidad_acciones == 0) {
-                    for (int j = i; j < listaClientes[indiceCliente].num_inversiones - 1; j++) {
-                        listaClientes[indiceCliente].inversiones[j] = listaClientes[indiceCliente].inversiones[j + 1];
+                        // Aumentar el saldo del cliente
+                        listaClientes[clienteIndex].saldo_cuenta += precioTotal;
+
+                        // Si el cliente vendió todas sus acciones, eliminar la inversión
+                        if (listaClientes[clienteIndex].inversiones[j].cantidad_acciones == 0) {
+                            // Mover las inversiones restantes para ocupar el espacio
+                            for (int k = j; k < listaClientes[clienteIndex].num_inversiones - 1; k++) {
+                                listaClientes[clienteIndex].inversiones[k] = listaClientes[clienteIndex].inversiones[k + 1];
+                            }
+                            listaClientes[clienteIndex].num_inversiones--;  // Reducir el número de inversiones
+                        }
+
+                        printf("Venta realizada con éxito. Se acreditaron %.2f a su cuenta.\n", precioTotal);
+                    } else {
+                        printf("No tiene suficientes acciones para vender.\n");
                     }
-                    listaClientes[indiceCliente].num_inversiones--;
-                    printf("Inversión en %s eliminada de su portafolio.\n", idTicker);
+                    break;
                 }
-            } else {
-                printf("No tiene suficientes acciones para vender.\n");
+            }
+
+            if (!inversionEncontrada) {
+                printf("No tiene inversiones en la empresa con el ID Ticker proporcionado.\n");
             }
             break;
         }
     }
 
-    if (!inversionEncontrada) {
-        printf("Inversión no encontrada.\n");
+    if (!empresaEncontrada) {
+        printf("Empresa no encontrada.\n");
     }
 }
 
