@@ -224,7 +224,10 @@ void verPortafolio(int clienteIndex) {
 
     printf("Listado de Activos del Cliente: %s\n", listaClientes[clienteIndex].nombre);
     printf("-------------------------------------------------------------------------------\n");
-    printf("%-10s %-20s %-15s %-15s %-15s %-15s %-15s\n", "ID Ticker", "Nombre Empresa", "Acciones", "Precio Compra", "Precio Actual", "Valor Compra", "Valor Actual");
+    printf("%-10s %-20s %-15s %-15s %-15s %-15s %-15s %-15s %-15s\n",
+           "ID Ticker", "Nombre Empresa", "Acciones", "Precio Compra",
+           "Precio Actual", "Valor Compra", "Valor Actual",
+           "Rendimiento ($)", "Rendimiento (%)");
 
     // Recorrer todas las inversiones del cliente
     for (int i = 0; i < listaClientes[clienteIndex].num_inversiones; i++) {
@@ -247,15 +250,21 @@ void verPortafolio(int clienteIndex) {
         // Calcular el valor total de la inversión al precio actual
         float valorActual = inv.cantidad_acciones * precioActual;
 
-        // Mostrar la información de la inversión
-        printf("%-10s %-20s %-15d %-15.2f %-15.2f %-15.2f %-15.2f\n",
+        // Calcular rendimiento en términos de valor
+        float rendimientoValor = valorActual - valorCompra;
+
+        // Calcular rendimiento en porcentaje
+        float rendimientoPorcentaje = (valorCompra > 0) ? (rendimientoValor / valorCompra) * 100 : 0;
+
+        // Mostrar la información de la inversión y el rendimiento
+        printf("%-10s %-20s %-15d %-15.2f %-15.2f %-15.2f %-15.2f %-15.2f %-15.2f%%\n",
                inv.id_ticker, nombreEmpresa, inv.cantidad_acciones,
-               inv.precio_compra, precioActual, valorCompra, valorActual);
+               inv.precio_compra, precioActual, valorCompra, valorActual,
+               rendimientoValor, rendimientoPorcentaje);
     }
 
     printf("-------------------------------------------------------------------------------\n");
 }
-
 
 ////
 //// no se usa en ningun lado esta funcion
