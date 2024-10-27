@@ -32,7 +32,7 @@ void menuCliente(int clienteIndex) {
                 realizarInversion(clienteIndex);
                 break;
             case 2:
-//                verRendimiento();
+                verRendimiento(clienteIndex, listaEmpresas, numEmpresas);
                 break;
             case 3:
                 cargarSaldo(clienteIndex);
@@ -311,11 +311,88 @@ void extraerSaldo(int indiceCliente) {
 
     if (monto > 0 && monto <= listaClientes[indiceCliente].saldo_cuenta) {
         listaClientes[indiceCliente].saldo_cuenta -= monto;
-        printf("Extracción realizada con éxito. Su saldo actual es: %.2f\n", listaClientes[indiceCliente].saldo_cuenta);
+        printf("Extracción realizada con exito. Su saldo actual es: %.2f\n", listaClientes[indiceCliente].saldo_cuenta);
     } else if (monto > listaClientes[indiceCliente].saldo_cuenta) {
-        printf("Saldo insuficiente. No puede extraer más de lo que tiene.\n");
+        printf("Saldo insuficiente. No puede extraer mas de lo que tiene.\n");
     } else {
         printf("El monto debe ser mayor a cero.\n");
     }
 }
 
+//////////////////////////
+//////////////////////////
+/////////////////////////
+//Vista de rendimiento
+//
+float calcularRendimientoDiario(Cliente* cliente, Empresa empresas[], int num_empresas) {
+    float valor_inversion_actual = 0.0;
+    float valor_inversion_compra = 0.0;
+
+    for (int i = 0; i < cliente->num_inversiones; i++) {
+        for (int j = 0; j < num_empresas; j++) {
+            if (strcmp(cliente->inversiones[i].id_ticker, empresas[j].id_ticker) == 0) {
+                valor_inversion_actual += cliente->inversiones[i].cantidad_acciones * empresas[j].precio_actual;
+                valor_inversion_compra += cliente->inversiones[i].cantidad_acciones * cliente->inversiones[i].precio_compra;
+                break;
+            }
+        }
+    }
+
+    return ((valor_inversion_actual - valor_inversion_compra) / valor_inversion_compra) * 100.0; // % de cambio
+}
+
+float calcularRendimientoHistorico(Cliente* cliente, Empresa empresas[], int num_empresas, char* fecha) {
+    float valor_inversion_hist = 0.0;
+    float valor_inversion_actual = 0.0;
+
+    for (int i = 0; i < cliente->num_inversiones; i++) {
+        for (int j = 0; j < num_empresas; j++) {
+            if (strcmp(cliente->inversiones[i].id_ticker, empresas[j].id_ticker) == 0) {
+                // Encuentra el precio en la fecha específica
+                for (int k = 0; k < empresas[j].num_historico; k++) {
+                    if (strcmp(empresas[j].historico[k].fecha, fecha) == 0) {
+                        valor_inversion_hist += cliente->inversiones[i].cantidad_acciones * empresas[j].historico[k].precio;
+                        break;
+                    }
+                }
+                // Calcula el valor actual también
+                valor_inversion_actual += cliente->inversiones[i].cantidad_acciones * empresas[j].precio_actual;
+                break;
+            }
+        }
+    }
+
+    return ((valor_inversion_actual - valor_inversion_hist) / valor_inversion_hist) * 100.0; // % de cambio
+}
+
+
+// Función para mostrar el rendimiento
+void verRendimiento(int clienteIndex, Empresa empresas[], int num_empresas) {
+    int opcion;
+    printf("\n--- Ver Rendimiento ---\n");
+    printf("1. Rendimiento Diario\n");
+    printf("2. Rendimiento Historico\n");
+    printf("Seleccione una opcion: ");
+    scanf("%d", &opcion);
+
+    switch(opcion) {
+        case 1: {
+            //tengo que agregar para mostrar el cambio de valor diario, hasta ahora solo tengo el cambio de valor  porcentual;
+            //convedria hacerlo directamente dentro las fuciones y no pdir un return, por que quiero mostrar dos valores.
+            float rendimiento_diario = calcularRendimientoDiario(&listaClientes[clienteIndex], empresas, num_empresas);
+            printf("Rendimiento Diario: %.2f%%\n", rendimiento_diario);
+            break;
+        }
+        case 2: {
+            char fecha[11];
+            printf("Ingrese la fecha (YYYY-MM-DD): ");
+            scanf("%s", fecha);
+
+            float rendimiento_hist = calcularRendimientoHistorico(&listaClientes[clienteIndex], empresas, num_empresas, fecha);
+            printf("Rendimiento Historico al %s: %.2f%%\n", fecha, rendimiento_hist);
+            break;
+        }
+        default:
+            printf("Opcion inválida. Intente de nuevo.\n");
+    }
+}

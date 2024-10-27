@@ -11,9 +11,6 @@ void verPortafolio(int clienteIndex);
 void comprarVenderAcciones();
 void comprarAcciones(int indiceCliente);
 void venderAcciones(int indiceCliente);
-//void verRendimiento();
-void rendimientoDiario();
-void rendimientoHistorico();
 void listarActivos();
 void rendimientoPorActivo();
 void menuCliente(int clienteIndex);  // Prototipo de la función del menú de Cliente
@@ -23,5 +20,16 @@ void menuCliente(int clienteIndex);  // Prototipo de la función del menú de Clie
 void cargarSaldo(int indiceCliente);
 void extraerSaldo(int indiceCliente);
 
+
+
+
+///vista de rendimiento
+float calcularRendimientoDiario(Cliente* cliente, Empresa empresas[], int num_empresas);
+float calcularRendimientoHistorico(Cliente* cliente, Empresa empresas[], int num_empresas, char* fecha);
+
+void verRendimiento(int clienteIndex, Empresa empresas[], int num_empresas);
+void rendimientoDiario();
+
+void rendimientoHistorico();
 
 #endif // MENUCLIENTE_H_INCLUDED

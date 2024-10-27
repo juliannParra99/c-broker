@@ -3,10 +3,19 @@
 
 #include "constantes.h"
 
+//struct adicionales:
+typedef struct {
+    char fecha[11];
+    float precio;
+} PrecioHistorico;
+
 typedef struct {
     char id_ticker[10];
     char nombre[50];
     float precio_actual;
+    //nuevas propiedades para la vista de Rendimiento
+    PrecioHistorico historico[MAX_HISTORICO];
+    int num_historico;
 } Empresa;
 
 //  Inversión
