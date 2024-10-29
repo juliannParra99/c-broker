@@ -229,34 +229,63 @@ void verPortafolio(int clienteIndex) {
            "Precio Actual", "Valor Compra", "Valor Actual",
            "Rendimiento ($)", "Rendimiento (%)");
 
-    // Recorrer todas las inversiones del cliente
+    // Ordenar las inversiones por rendimiento porcentual de mayor a menor
+    for (int i = 0; i < listaClientes[clienteIndex].num_inversiones - 1; i++) {
+        for (int j = i + 1; j < listaClientes[clienteIndex].num_inversiones; j++) {
+            // Calcular rendimiento para la inversión `i`
+            Inversion inv_i = listaClientes[clienteIndex].inversiones[i];
+            float valorCompra_i = inv_i.cantidad_acciones * inv_i.precio_compra;
+            float precioActual_i = 0.0;
+            for (int k = 0; k < numEmpresas; k++) {
+                if (strcmp(listaEmpresas[k].id_ticker, inv_i.id_ticker) == 0) {
+                    precioActual_i = listaEmpresas[k].precio_actual;
+                    break;
+                }
+            }
+            float valorActual_i = inv_i.cantidad_acciones * precioActual_i;
+            float rendimientoPorcentaje_i = (valorCompra_i > 0) ? ((valorActual_i - valorCompra_i) / valorCompra_i) * 100 : 0;
+
+            // Calcular rendimiento para la inversión `j`
+            Inversion inv_j = listaClientes[clienteIndex].inversiones[j];
+            float valorCompra_j = inv_j.cantidad_acciones * inv_j.precio_compra;
+            float precioActual_j = 0.0;
+            for (int k = 0; k < numEmpresas; k++) {
+                if (strcmp(listaEmpresas[k].id_ticker, inv_j.id_ticker) == 0) {
+                    precioActual_j = listaEmpresas[k].precio_actual;
+                    break;
+                }
+            }
+            float valorActual_j = inv_j.cantidad_acciones * precioActual_j;
+            float rendimientoPorcentaje_j = (valorCompra_j > 0) ? ((valorActual_j - valorCompra_j) / valorCompra_j) * 100 : 0;
+
+            // Intercambiar si la inversión j tiene un mejor rendimiento que i
+            if (rendimientoPorcentaje_j > rendimientoPorcentaje_i) {
+                Inversion temp = listaClientes[clienteIndex].inversiones[i];
+                listaClientes[clienteIndex].inversiones[i] = listaClientes[clienteIndex].inversiones[j];
+                listaClientes[clienteIndex].inversiones[j] = temp;
+            }
+        }
+    }
+
+    // Mostrar las inversiones ordenadas por rendimiento
     for (int i = 0; i < listaClientes[clienteIndex].num_inversiones; i++) {
         Inversion inv = listaClientes[clienteIndex].inversiones[i];
-        char nombreEmpresa[50] = "Desconocido"; // Valor predeterminado si no se encuentra la empresa
-        float precioActual = 0.0; // Precio actual de la empresa (si se encuentra)
+        char nombreEmpresa[50] = "Desconocido";
+        float precioActual = 0.0;
 
-        // Buscar el nombre de la empresa y su precio actual con base en el ID Ticker
         for (int j = 0; j < numEmpresas; j++) {
             if (strcmp(listaEmpresas[j].id_ticker, inv.id_ticker) == 0) {
-                strcpy(nombreEmpresa, listaEmpresas[j].nombre);  // Copiar nombre de la empresa
-                precioActual = listaEmpresas[j].precio_actual;   // Obtener el precio actual de la empresa
+                strcpy(nombreEmpresa, listaEmpresas[j].nombre);
+                precioActual = listaEmpresas[j].precio_actual;
                 break;
             }
         }
 
-        // Calcular el valor total de la inversión al precio de compra
         float valorCompra = inv.cantidad_acciones * inv.precio_compra;
-
-        // Calcular el valor total de la inversión al precio actual
         float valorActual = inv.cantidad_acciones * precioActual;
-
-        // Calcular rendimiento en términos de valor
         float rendimientoValor = valorActual - valorCompra;
-
-        // Calcular rendimiento en porcentaje
         float rendimientoPorcentaje = (valorCompra > 0) ? (rendimientoValor / valorCompra) * 100 : 0;
 
-        // Mostrar la información de la inversión y el rendimiento
         printf("%-10s %-20s %-15d %-15.2f %-15.2f %-15.2f %-15.2f %-15.2f %-15.2f%%\n",
                inv.id_ticker, nombreEmpresa, inv.cantidad_acciones,
                inv.precio_compra, precioActual, valorCompra, valorActual,
@@ -324,21 +353,50 @@ void extraerSaldo(int indiceCliente) {
 /////////////////////////
 //Vista de rendimiento
 //
-float calcularRendimientoDiario(Cliente* cliente, Empresa empresas[], int num_empresas) {
+void calcularRendimientoDiario(Cliente* cliente, Empresa empresas[], int num_empresas) {
     float valor_inversion_actual = 0.0;
     float valor_inversion_compra = 0.0;
 
+    // Recorrer las inversiones del cliente
     for (int i = 0; i < cliente->num_inversiones; i++) {
+        // Recorrer las empresas para encontrar el ticker correspondiente
         for (int j = 0; j < num_empresas; j++) {
+            // Comparar el ticker de la inversión con el ticker de la empresa
             if (strcmp(cliente->inversiones[i].id_ticker, empresas[j].id_ticker) == 0) {
+                // Calcular el valor actual de la inversión
                 valor_inversion_actual += cliente->inversiones[i].cantidad_acciones * empresas[j].precio_actual;
+                // Calcular el valor de compra de la inversión
                 valor_inversion_compra += cliente->inversiones[i].cantidad_acciones * cliente->inversiones[i].precio_compra;
-                break;
+
+                break; // Salir del bucle de empresas ya que encontramos el ticker
             }
         }
     }
 
-    return ((valor_inversion_actual - valor_inversion_compra) / valor_inversion_compra) * 100.0; // % de cambio
+    // Imprimir los valores totales para verificación
+    printf("Valor Inversión Actual: %.2f\n", valor_inversion_actual);
+    printf("Valor Inversión Compra: %.2f\n", valor_inversion_compra);
+
+    // Comprobar si el valor de compra es cero para evitar división por cero
+    if (valor_inversion_compra == 0) {
+        printf("No se puede calcular el rendimiento, el valor de compra es 0.\n");
+        return; // Salir de la función
+    }
+
+    // Calcular el rendimiento en dinero
+    float rendimiento_diario = valor_inversion_actual - valor_inversion_compra;
+    // Calcular el rendimiento en porcentaje
+    float rendimiento_porcentaje = (rendimiento_diario / valor_inversion_compra) * 100.0;
+
+    // Imprimir el rendimiento en dinero y en porcentaje
+    printf("-------------------------------------------------------------------------------\n");
+    printf("                         Resumen del Rendimiento Diario\n");
+    printf("-------------------------------------------------------------------------------\n");
+    printf("Valor Inversión Actual: %.2f\n", valor_inversion_actual);
+    printf("Valor Inversión Compra: %.2f\n", valor_inversion_compra);
+    printf("Rendimiento Diario: %.2f\n", rendimiento_diario);
+    printf("Rendimiento Diario: %.2f%%\n", rendimiento_porcentaje);
+    printf("-------------------------------------------------------------------------------\n");
 }
 
 float calcularRendimientoHistorico(Cliente* cliente, Empresa empresas[], int num_empresas, char* fecha) {
@@ -379,8 +437,7 @@ void verRendimiento(int clienteIndex, Empresa empresas[], int num_empresas) {
         case 1: {
             //tengo que agregar para mostrar el cambio de valor diario, hasta ahora solo tengo el cambio de valor  porcentual;
             //convedria hacerlo directamente dentro las fuciones y no pdir un return, por que quiero mostrar dos valores.
-            float rendimiento_diario = calcularRendimientoDiario(&listaClientes[clienteIndex], empresas, num_empresas);
-            printf("Rendimiento Diario: %.2f%%\n", rendimiento_diario);
+            calcularRendimientoDiario(&listaClientes[clienteIndex], empresas, num_empresas);
             break;
         }
         case 2: {

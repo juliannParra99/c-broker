@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1729473923 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\main.c
+1730167126 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\main.c
 	<stdio.h>
 	<stdlib.h>
 	"menuBroker.h"
@@ -12,14 +12,14 @@
 	"structs.h"
 	"constantes.h"
 
-1730054992 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\structs.h
+1730079988 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\structs.h
 	"constantes.h"
 
-1730054656 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\constantes.h
+1730079988 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\constantes.h
 
 1729473923 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\interfacesgraf.h
 
-1730061849 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\menucliente.c
+1730164404 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\menucliente.c
 	<stdio.h>
 	<stdlib.h>
 	"menuBroker.h"
@@ -31,4 +31,8 @@
 	<stdlib.h>
 	"structs.h"
 	"constantes.h"
+
+1730162860 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\funcionesutiles.c
+	<stdlib.h>
+	<time.h>
 
