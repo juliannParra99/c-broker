@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1729473923 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\main.c
+1730163230 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\main.c
 	<stdio.h>
 	<stdlib.h>
 	"menuBroker.h"
@@ -19,7 +19,7 @@
 
 1729473923 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\interfacesgraf.h
 
-1730079988 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\menucliente.c
+1730164404 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\menucliente.c
 	<stdio.h>
 	<stdlib.h>
 	"menuBroker.h"

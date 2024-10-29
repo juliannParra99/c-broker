@@ -229,34 +229,63 @@ void verPortafolio(int clienteIndex) {
            "Precio Actual", "Valor Compra", "Valor Actual",
            "Rendimiento ($)", "Rendimiento (%)");
 
-    // Recorrer todas las inversiones del cliente
+    // Ordenar las inversiones por rendimiento porcentual de mayor a menor
+    for (int i = 0; i < listaClientes[clienteIndex].num_inversiones - 1; i++) {
+        for (int j = i + 1; j < listaClientes[clienteIndex].num_inversiones; j++) {
+            // Calcular rendimiento para la inversión `i`
+            Inversion inv_i = listaClientes[clienteIndex].inversiones[i];
+            float valorCompra_i = inv_i.cantidad_acciones * inv_i.precio_compra;
+            float precioActual_i = 0.0;
+            for (int k = 0; k < numEmpresas; k++) {
+                if (strcmp(listaEmpresas[k].id_ticker, inv_i.id_ticker) == 0) {
+                    precioActual_i = listaEmpresas[k].precio_actual;
+                    break;
+                }
+            }
+            float valorActual_i = inv_i.cantidad_acciones * precioActual_i;
+            float rendimientoPorcentaje_i = (valorCompra_i > 0) ? ((valorActual_i - valorCompra_i) / valorCompra_i) * 100 : 0;
+
+            // Calcular rendimiento para la inversión `j`
+            Inversion inv_j = listaClientes[clienteIndex].inversiones[j];
+            float valorCompra_j = inv_j.cantidad_acciones * inv_j.precio_compra;
+            float precioActual_j = 0.0;
+            for (int k = 0; k < numEmpresas; k++) {
+                if (strcmp(listaEmpresas[k].id_ticker, inv_j.id_ticker) == 0) {
+                    precioActual_j = listaEmpresas[k].precio_actual;
+                    break;
+                }
+            }
+            float valorActual_j = inv_j.cantidad_acciones * precioActual_j;
+            float rendimientoPorcentaje_j = (valorCompra_j > 0) ? ((valorActual_j - valorCompra_j) / valorCompra_j) * 100 : 0;
+
+            // Intercambiar si la inversión j tiene un mejor rendimiento que i
+            if (rendimientoPorcentaje_j > rendimientoPorcentaje_i) {
+                Inversion temp = listaClientes[clienteIndex].inversiones[i];
+                listaClientes[clienteIndex].inversiones[i] = listaClientes[clienteIndex].inversiones[j];
+                listaClientes[clienteIndex].inversiones[j] = temp;
+            }
+        }
+    }
+
+    // Mostrar las inversiones ordenadas por rendimiento
     for (int i = 0; i < listaClientes[clienteIndex].num_inversiones; i++) {
         Inversion inv = listaClientes[clienteIndex].inversiones[i];
-        char nombreEmpresa[50] = "Desconocido"; // Valor predeterminado si no se encuentra la empresa
-        float precioActual = 0.0; // Precio actual de la empresa (si se encuentra)
+        char nombreEmpresa[50] = "Desconocido";
+        float precioActual = 0.0;
 
-        // Buscar el nombre de la empresa y su precio actual con base en el ID Ticker
         for (int j = 0; j < numEmpresas; j++) {
             if (strcmp(listaEmpresas[j].id_ticker, inv.id_ticker) == 0) {
-                strcpy(nombreEmpresa, listaEmpresas[j].nombre);  // Copiar nombre de la empresa
-                precioActual = listaEmpresas[j].precio_actual;   // Obtener el precio actual de la empresa
+                strcpy(nombreEmpresa, listaEmpresas[j].nombre);
+                precioActual = listaEmpresas[j].precio_actual;
                 break;
             }
         }
 
-        // Calcular el valor total de la inversión al precio de compra
         float valorCompra = inv.cantidad_acciones * inv.precio_compra;
-
-        // Calcular el valor total de la inversión al precio actual
         float valorActual = inv.cantidad_acciones * precioActual;
-
-        // Calcular rendimiento en términos de valor
         float rendimientoValor = valorActual - valorCompra;
-
-        // Calcular rendimiento en porcentaje
         float rendimientoPorcentaje = (valorCompra > 0) ? (rendimientoValor / valorCompra) * 100 : 0;
 
-        // Mostrar la información de la inversión y el rendimiento
         printf("%-10s %-20s %-15d %-15.2f %-15.2f %-15.2f %-15.2f %-15.2f %-15.2f%%\n",
                inv.id_ticker, nombreEmpresa, inv.cantidad_acciones,
                inv.precio_compra, precioActual, valorCompra, valorActual,
