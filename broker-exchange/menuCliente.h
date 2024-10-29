@@ -24,7 +24,7 @@ void extraerSaldo(int indiceCliente);
 
 
 ///vista de rendimiento
-float calcularRendimientoDiario(Cliente* cliente, Empresa empresas[], int num_empresas);
+void calcularRendimientoDiario(Cliente* cliente, Empresa empresas[], int num_empresas);
 float calcularRendimientoHistorico(Cliente* cliente, Empresa empresas[], int num_empresas, char* fecha);
 
 void verRendimiento(int clienteIndex, Empresa empresas[], int num_empresas);

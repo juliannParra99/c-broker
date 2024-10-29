@@ -70,16 +70,18 @@ int main()
     cliente.saldo_cuenta = 10000.0;
 
     // Inversiones del cliente
-    cliente.inversiones[0] = (Inversion){"AAPL", 5, 155.0, "2023-01-02"};
-    cliente.inversiones[1] = (Inversion){"TSLA", 3, 215.0, "2023-01-05"};
-    cliente.inversiones[2] = (Inversion){"AMZN", 10, 95.0, "2023-01-10"};
+    cliente.inversiones[0] = (Inversion){"AAPL", 5, 155.0, "2024-01-02"};
+    cliente.inversiones[1] = (Inversion){"MSFT", 4, 200.0, "2024-02-10"};
+    cliente.inversiones[2] = (Inversion){"GOOGL", 3, 300.0, "2024-03-15"};
+
+    // Manteniendo el resto de las inversiones originales
     cliente.inversiones[3] = (Inversion){"AAPL", 7, 160.0, "2023-02-15"};
-    cliente.inversiones[4] = (Inversion){"TSLA", 2, 220.0, "2023-02-20"};
-    cliente.inversiones[5] = (Inversion){"AMZN", 4, 102.0, "2023-02-25"};
-    cliente.inversiones[6] = (Inversion){"AAPL", 6, 162.0, "2023-03-01"};
-    cliente.inversiones[7] = (Inversion){"TSLA", 5, 230.0, "2023-03-10"};
-    cliente.inversiones[8] = (Inversion){"AMZN", 8, 105.0, "2023-03-15"};
-    cliente.inversiones[9] = (Inversion){"AAPL", 10, 165.0, "2023-03-20"};
+    cliente.inversiones[4] = (Inversion){"AAPL", 6, 162.0, "2023-03-01"};
+    cliente.inversiones[5] = (Inversion){"AAPL", 10, 165.0, "2023-03-20"};
+    cliente.inversiones[6] = (Inversion){"MSFT", 2, 220.0, "2023-02-20"};
+    cliente.inversiones[7] = (Inversion){"GOOGL", 4, 95.0, "2023-03-10"};
+    cliente.inversiones[8] = (Inversion){"MSFT", 5, 230.0, "2023-03-10"};
+    cliente.inversiones[9] = (Inversion){"GOOGL", 8, 105.0, "2023-03-15"};
     cliente.num_inversiones = 10;
 
     // Agregar el cliente a la lista de clientes y actualizar el contador

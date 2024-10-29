@@ -353,21 +353,50 @@ void extraerSaldo(int indiceCliente) {
 /////////////////////////
 //Vista de rendimiento
 //
-float calcularRendimientoDiario(Cliente* cliente, Empresa empresas[], int num_empresas) {
+void calcularRendimientoDiario(Cliente* cliente, Empresa empresas[], int num_empresas) {
     float valor_inversion_actual = 0.0;
     float valor_inversion_compra = 0.0;
 
+    // Recorrer las inversiones del cliente
     for (int i = 0; i < cliente->num_inversiones; i++) {
+        // Recorrer las empresas para encontrar el ticker correspondiente
         for (int j = 0; j < num_empresas; j++) {
+            // Comparar el ticker de la inversión con el ticker de la empresa
             if (strcmp(cliente->inversiones[i].id_ticker, empresas[j].id_ticker) == 0) {
+                // Calcular el valor actual de la inversión
                 valor_inversion_actual += cliente->inversiones[i].cantidad_acciones * empresas[j].precio_actual;
+                // Calcular el valor de compra de la inversión
                 valor_inversion_compra += cliente->inversiones[i].cantidad_acciones * cliente->inversiones[i].precio_compra;
-                break;
+
+                break; // Salir del bucle de empresas ya que encontramos el ticker
             }
         }
     }
 
-    return ((valor_inversion_actual - valor_inversion_compra) / valor_inversion_compra) * 100.0; // % de cambio
+    // Imprimir los valores totales para verificación
+    printf("Valor Inversión Actual: %.2f\n", valor_inversion_actual);
+    printf("Valor Inversión Compra: %.2f\n", valor_inversion_compra);
+
+    // Comprobar si el valor de compra es cero para evitar división por cero
+    if (valor_inversion_compra == 0) {
+        printf("No se puede calcular el rendimiento, el valor de compra es 0.\n");
+        return; // Salir de la función
+    }
+
+    // Calcular el rendimiento en dinero
+    float rendimiento_diario = valor_inversion_actual - valor_inversion_compra;
+    // Calcular el rendimiento en porcentaje
+    float rendimiento_porcentaje = (rendimiento_diario / valor_inversion_compra) * 100.0;
+
+    // Imprimir el rendimiento en dinero y en porcentaje
+    printf("-------------------------------------------------------------------------------\n");
+    printf("                         Resumen del Rendimiento Diario\n");
+    printf("-------------------------------------------------------------------------------\n");
+    printf("Valor Inversión Actual: %.2f\n", valor_inversion_actual);
+    printf("Valor Inversión Compra: %.2f\n", valor_inversion_compra);
+    printf("Rendimiento Diario: %.2f\n", rendimiento_diario);
+    printf("Rendimiento Diario: %.2f%%\n", rendimiento_porcentaje);
+    printf("-------------------------------------------------------------------------------\n");
 }
 
 float calcularRendimientoHistorico(Cliente* cliente, Empresa empresas[], int num_empresas, char* fecha) {
@@ -408,8 +437,7 @@ void verRendimiento(int clienteIndex, Empresa empresas[], int num_empresas) {
         case 1: {
             //tengo que agregar para mostrar el cambio de valor diario, hasta ahora solo tengo el cambio de valor  porcentual;
             //convedria hacerlo directamente dentro las fuciones y no pdir un return, por que quiero mostrar dos valores.
-            float rendimiento_diario = calcularRendimientoDiario(&listaClientes[clienteIndex], empresas, num_empresas);
-            printf("Rendimiento Diario: %.2f%%\n", rendimiento_diario);
+            calcularRendimientoDiario(&listaClientes[clienteIndex], empresas, num_empresas);
             break;
         }
         case 2: {
