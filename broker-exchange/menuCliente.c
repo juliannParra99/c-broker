@@ -3,6 +3,7 @@
 #include "menuBroker.h"
 #include "structs.h"
 #include "constantes.h"
+#include "funcionesUtiles.h"
 
 extern Cliente listaClientes[MAX_CLIENTES]; // Declaración de listaClientes como variable externa
 extern Empresa listaEmpresas[];
@@ -107,32 +108,23 @@ void comprarAcciones(int clienteIndex) {
             float precioTotal = cantidadAcciones * listaEmpresas[i].precio_actual;
 
             if (listaClientes[clienteIndex].saldo_cuenta >= precioTotal) {
-                int inversionEncontrada = 0;
+                // Capturar la fecha de compra
+                char fechaCompra[11];
+                printf("Ingrese la fecha de compra (YYYY-MM-DD): ");
+                scanf("%s", fechaCompra);
 
-                // Verificar si el cliente ya tiene acciones de esta empresa
-                for (int j = 0; j < listaClientes[clienteIndex].num_inversiones; j++) {
-                    if (strcmp(listaClientes[clienteIndex].inversiones[j].id_ticker, idTicker) == 0) {
-                        listaClientes[clienteIndex].inversiones[j].cantidad_acciones += cantidadAcciones;
-                        inversionEncontrada = 1;
-                        break;
-                    }
-                }
+                // Registrar la nueva inversión como una entrada individual
+                Inversion nuevaInversion;
+                strcpy(nuevaInversion.id_ticker, idTicker);
+                nuevaInversion.cantidad_acciones = cantidadAcciones;
+                nuevaInversion.precio_compra = listaEmpresas[i].precio_actual;
+                strcpy(nuevaInversion.fecha, fechaCompra);  // Guardar la fecha de compra
 
-                // Si no tiene inversiones previas en esta empresa, agregar nueva inversión
-                if (!inversionEncontrada) {
-                    Inversion nuevaInversion;
-                    strcpy(nuevaInversion.id_ticker, idTicker);
-                    nuevaInversion.cantidad_acciones = cantidadAcciones;
-                    nuevaInversion.precio_compra = listaEmpresas[i].precio_actual;
+                // Agregar la nueva inversión a la lista de inversiones del cliente
+                listaClientes[clienteIndex].inversiones[listaClientes[clienteIndex].num_inversiones] = nuevaInversion;
+                listaClientes[clienteIndex].num_inversiones++;
 
-                    // Capturar la fecha actual
-                    printf("Ingrese la fecha de compra (YYYY-MM-DD): ");
-                    scanf("%s", nuevaInversion.fecha);  // O puedes capturar la fecha automáticamente
-
-                    listaClientes[clienteIndex].inversiones[listaClientes[clienteIndex].num_inversiones] = nuevaInversion;
-                    listaClientes[clienteIndex].num_inversiones++;
-                }
-
+                // Actualizar el saldo del cliente
                 listaClientes[clienteIndex].saldo_cuenta -= precioTotal;
                 printf("Compra realizada con éxito.\n");
             } else {
@@ -215,12 +207,18 @@ void venderAcciones(int clienteIndex) {
     }
 }
 
-//primera manera
 void verPortafolio(int clienteIndex) {
     if (listaClientes[clienteIndex].num_inversiones == 0) {
         printf("El cliente no tiene inversiones en su portafolio.\n");
         return;
     }
+
+    double totalValoresActuales = sumarValoresActuales(clienteIndex);
+    printf("\n");
+    printf("-------------------------------------------------------------------------------\n");
+    printf("El valor de la cartera es de: %.2lf\n", totalValoresActuales);
+
+    printf("-------------------------------------------------------------------------------\n");
 
     printf("Listado de Activos del Cliente: %s\n", listaClientes[clienteIndex].nombre);
     printf("-------------------------------------------------------------------------------\n");
@@ -233,29 +231,15 @@ void verPortafolio(int clienteIndex) {
     for (int i = 0; i < listaClientes[clienteIndex].num_inversiones - 1; i++) {
         for (int j = i + 1; j < listaClientes[clienteIndex].num_inversiones; j++) {
             // Calcular rendimiento para la inversión `i`
-            Inversion inv_i = listaClientes[clienteIndex].inversiones[i];
-            float valorCompra_i = inv_i.cantidad_acciones * inv_i.precio_compra;
-            float precioActual_i = 0.0;
-            for (int k = 0; k < numEmpresas; k++) {
-                if (strcmp(listaEmpresas[k].id_ticker, inv_i.id_ticker) == 0) {
-                    precioActual_i = listaEmpresas[k].precio_actual;
-                    break;
-                }
-            }
-            float valorActual_i = inv_i.cantidad_acciones * precioActual_i;
+            float precioActual_i = obtenerPrecioActual(listaClientes[clienteIndex].inversiones[i].id_ticker);
+            float valorCompra_i = listaClientes[clienteIndex].inversiones[i].cantidad_acciones * listaClientes[clienteIndex].inversiones[i].precio_compra;
+            float valorActual_i = listaClientes[clienteIndex].inversiones[i].cantidad_acciones * precioActual_i;
             float rendimientoPorcentaje_i = (valorCompra_i > 0) ? ((valorActual_i - valorCompra_i) / valorCompra_i) * 100 : 0;
 
             // Calcular rendimiento para la inversión `j`
-            Inversion inv_j = listaClientes[clienteIndex].inversiones[j];
-            float valorCompra_j = inv_j.cantidad_acciones * inv_j.precio_compra;
-            float precioActual_j = 0.0;
-            for (int k = 0; k < numEmpresas; k++) {
-                if (strcmp(listaEmpresas[k].id_ticker, inv_j.id_ticker) == 0) {
-                    precioActual_j = listaEmpresas[k].precio_actual;
-                    break;
-                }
-            }
-            float valorActual_j = inv_j.cantidad_acciones * precioActual_j;
+            float precioActual_j = obtenerPrecioActual(listaClientes[clienteIndex].inversiones[j].id_ticker);
+            float valorCompra_j = listaClientes[clienteIndex].inversiones[j].cantidad_acciones * listaClientes[clienteIndex].inversiones[j].precio_compra;
+            float valorActual_j = listaClientes[clienteIndex].inversiones[j].cantidad_acciones * precioActual_j;
             float rendimientoPorcentaje_j = (valorCompra_j > 0) ? ((valorActual_j - valorCompra_j) / valorCompra_j) * 100 : 0;
 
             // Intercambiar si la inversión j tiene un mejor rendimiento que i
@@ -271,12 +255,11 @@ void verPortafolio(int clienteIndex) {
     for (int i = 0; i < listaClientes[clienteIndex].num_inversiones; i++) {
         Inversion inv = listaClientes[clienteIndex].inversiones[i];
         char nombreEmpresa[50] = "Desconocido";
-        float precioActual = 0.0;
+        float precioActual = obtenerPrecioActual(inv.id_ticker);
 
         for (int j = 0; j < numEmpresas; j++) {
             if (strcmp(listaEmpresas[j].id_ticker, inv.id_ticker) == 0) {
                 strcpy(nombreEmpresa, listaEmpresas[j].nombre);
-                precioActual = listaEmpresas[j].precio_actual;
                 break;
             }
         }
@@ -295,7 +278,7 @@ void verPortafolio(int clienteIndex) {
     printf("-------------------------------------------------------------------------------\n");
 }
 
-////
+
 //// no se usa en ningun lado esta funcion
 void comprarVenderAcciones() {
     int opcion;

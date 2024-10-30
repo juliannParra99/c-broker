@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "structs.h"
 #include "constantes.h"
-
+#include "funcionesUtiles.h"
 
 
 //variables:
