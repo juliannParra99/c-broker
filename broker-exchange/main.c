@@ -44,8 +44,8 @@ int main()
     listaClientes[1] = (Cliente){
         "Maria Gomez",
         "maria.gomez@email.com",
-        "27123456789",
-        "securePass456",
+        "5555",
+        "5555",
         30000.00,
         {}, // Inicialización vacía para inversiones
         0   // num_inversiones
@@ -63,9 +63,9 @@ int main()
 
     // Cliente adicional con inversiones en diferentes fechas
     Cliente cliente;
-    strcpy(cliente.nombre, "Juan Perez");
+    strcpy(cliente.nombre, "Pablo Juan Perez");
     strcpy(cliente.email, "pablo@gmail.com");
-    strcpy(cliente.cuit, "20123456789");
+    strcpy(cliente.cuit, "1111");
     strcpy(cliente.password, "1234");
     cliente.saldo_cuenta = 10000.0;
 
@@ -88,6 +88,18 @@ int main()
     listaClientes[numClientes] = cliente;
     numClientes++;
 
+    Cliente clienteEjemplo;
+    strcpy(clienteEjemplo.nombre, "Lucia Fernandez");
+    strcpy(clienteEjemplo.email, "lucia.fernandez@gmail.com");
+    strcpy(clienteEjemplo.cuit, "2222");
+    strcpy(clienteEjemplo.password, "abcd1234");
+    clienteEjemplo.saldo_cuenta = 15000.0;
+
+    // Inversiones del cliente
+    clienteEjemplo.inversiones[0] = (Inversion){"GOOGL", 8, 2800.0, "2024-04-10"};
+    clienteEjemplo.num_inversiones = 1;
+    listaClientes[numClientes] = clienteEjemplo;
+    numClientes++;
 
     inicializar_aleatoriedad();
 

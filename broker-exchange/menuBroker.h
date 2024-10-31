@@ -18,8 +18,7 @@ void altaEmpresa();
 void mostrarEmpresas();
 void bajaEmpresa();
 void modificarEmpresa();
-void filtrarOperacionesPorCliente();
-void filtrarOperacionesPorIDTicker();
+
 
 
 

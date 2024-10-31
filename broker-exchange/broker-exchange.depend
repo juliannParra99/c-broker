@@ -8,7 +8,7 @@
 	"interfacesGraf.h"
 	<string.h>
 
-1729473923 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\menubroker.h
+1730331842 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\menubroker.h
 	"structs.h"
 	"constantes.h"
 
@@ -19,7 +19,7 @@
 
 1729473923 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\interfacesgraf.h
 
-1730325523 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\menucliente.c
+1730326625 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\menucliente.c
 	<stdio.h>
 	<stdlib.h>
 	"menuBroker.h"
@@ -27,19 +27,20 @@
 	"constantes.h"
 	"funcionesUtiles.h"
 
-1730315037 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\menubroker.c
+1730332442 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\menubroker.c
 	<stdio.h>
 	<stdlib.h>
+	<string.h>
 	"structs.h"
 	"constantes.h"
 	"funcionesUtiles.h"
 
-1730325680 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\funcionesutiles.c
+1730331822 source:c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\funcionesutiles.c
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
 	<time.h>
 	"structs.h"
 
-1730325688 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\funcionesutiles.h
+1730331838 c:\users\usuario\onedrive\documentos\personal-unla-docs\programming i\final-project-final\broker-exchange\funcionesutiles.h
 

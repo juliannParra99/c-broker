@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "structs.h"
 #include "constantes.h"
 #include "funcionesUtiles.h"
@@ -332,15 +333,6 @@ void modificarEmpresa()
     }
 }
 
-void filtrarOperacionesPorCliente()
-{
-    return;
-}
-
-void filtrarOperacionesPorIDTicker()
-{
-    return;
-}
 
 
 ///------------------------------------
@@ -371,11 +363,15 @@ void menuBroker() {
             case 6:
                 modificarEmpresa();
                 break;
-            case 7:
-                filtrarOperacionesPorCliente();
-                break;
+            case 7:{
+                int clienteIndex = validarCuitCliente(); // Validar CUIT y obtener el índice
+                if (clienteIndex != -1) {
+                    filtrarOperacionesPorCliente(listaClientes[clienteIndex].cuit);  // Llamar a la función con el CUIT
+                }
+                break;  // Asegúrate de tener un break aquí
+            }
             case 8:
-                filtrarOperacionesPorIDTicker();
+                //filtrarOperacionesPorIDTicker();
                 break;
             case 9:
                 mostrarClientes();
@@ -406,4 +402,8 @@ void mostrarMenuBroker() {
     printf("9. Mostrar Clientes\n");
     printf("10. Mostrar Empresas\n");
     printf("11. Volver al menú principal\n");
+
+
 }
+
+

@@ -113,3 +113,54 @@ double sumarValoresActuales(int clienteIndex) {
 //        printf("Se ha alcanzado el máximo de precios históricos para la empresa %s.\n", empresa->id_ticker);
 //    }
 //}
+
+
+
+/// broker
+//filtrar operaciones por clientes
+void filtrarOperacionesPorCliente(const char* cuit_cliente) {
+    int clienteIndex = -1;
+
+    // Buscar el índice del cliente con el CUIT ingresado
+    for (int i = 0; i < numClientes; i++) {
+        if (strcmp(listaClientes[i].cuit, cuit_cliente) == 0) {
+            clienteIndex = i;
+            break;
+        }
+    }
+
+    // Si el cliente existe, muestra sus inversiones
+    if (clienteIndex != -1) {
+        printf("Operaciones del cliente %s:\n", listaClientes[clienteIndex].nombre);
+        printf("-------------------------------------------------------------------------------\n");
+        printf("ID Ticker    | Cantidad de Acciones | Precio Compra | Fecha\n");
+        printf("-------------------------------------------------------------------------------\n");
+
+        for (int i = 0; i < listaClientes[clienteIndex].num_inversiones; i++) {
+            Inversion inv = listaClientes[clienteIndex].inversiones[i];
+            printf("%-12s | %-20d | %-13.2f | %s\n",
+                   inv.id_ticker, inv.cantidad_acciones, inv.precio_compra, inv.fecha);
+        }
+    } else {
+        printf("Cliente con CUIT %s no encontrado.\n", cuit_cliente);
+    }
+}
+
+int validarCuitCliente() {
+    char cuit[11]; // El CUIT tiene una longitud de 11 caracteres, +1 para el carácter nulo
+
+    // Solicitar el CUIT del cliente
+    printf("Ingrese su CUIT (11 dígitos): ");
+    scanf("%s", cuit);
+
+    // Buscar al cliente en la lista usando el CUIT
+    for (int i = 0; i < numClientes; i++) {
+        if (strcmp(listaClientes[i].cuit, cuit) == 0) {
+            printf("Cliente encontrado: %s\n", listaClientes[i].nombre);
+            return i; // Devolver el índice del cliente
+        }
+    }
+
+    printf("CUIT no encontrado.\n");
+    return -1; // No se encontró un cliente con el CUIT ingresado
+}

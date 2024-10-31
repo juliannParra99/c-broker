@@ -6,9 +6,10 @@ void inicializar_aleatoriedad();
 void actualizar_precio_accion(float *precio_actual);
 
 //filtrar: esto para el admin
-
-void filtrarOperacionesPorCliente();
+void filtrarOperacionesPorCliente(const char* cuit_cliente);
+int validarCuitCliente();
 void filtrarOperacionesPorIDTicker();
+
 
 
 void agregarPrecioHistorico(Empresa *empresa, const char *fecha, float precio);
