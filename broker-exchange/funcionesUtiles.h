@@ -20,6 +20,11 @@ float obtenerPrecioActual(const char* id_ticker);
 
 double sumarValoresActuales(int clienteIndex);
 
+float obtenerValorCarteraHistorico(float precio_compra) ;
+void rendimientoHistoricoCartera(int clienteIndex);
+float calcularCambioPorcentualCartera(int clienteIndex, int periodo);
+void filtrarInversionesPorTicker(char* buscarPorTicker);
+
 
 //aca van ir funciones de ordenamiento y relacionadas  a  funciones de modificar de manera random el precio de
 //las empresas al iniciar la app.

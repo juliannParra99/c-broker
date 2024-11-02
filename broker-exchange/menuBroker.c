@@ -338,7 +338,7 @@ void modificarEmpresa()
 ///------------------------------------
 void menuBroker() {
     int opcion;
-
+    char idTicker[10];
     do {
         mostrarMenuBroker();
         printf("\nSelecciona una opción: ");
@@ -371,7 +371,9 @@ void menuBroker() {
                 break;  // Asegúrate de tener un break aquí
             }
             case 8:
-                //filtrarOperacionesPorIDTicker();
+                printf("Ingrese el ID Ticker que desea buscar: ");
+                scanf("%s", idTicker);
+                filtrarInversionesPorTicker(idTicker);
                 break;
             case 9:
                 mostrarClientes();

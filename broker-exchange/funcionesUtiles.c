@@ -25,22 +25,7 @@ void actualizar_precio_accion(float *precio_actual) {
 
 }
 
-///
-//funcion rendimiento de calcular valor de cartera
-//float calcularValorTotalCartera(int clienteIndex) {
-//    float valorTotal = 0.0f;
-//
-//    for (int i = 0; i < listaClientes[clienteIndex].num_inversiones; i++) {
-//        Inversion inv = listaClientes[clienteIndex].inversiones[i];
-//        float precioActual = obtenerPrecioActual(inv.id_ticker);
-//        float valorActual = inv.cantidad_acciones * precioActual;
-//        printf("Inversión %d: Precio Actual = %.2f, Valor Actual = %.2f\n", i+1, precioActual, valorActual);
-//        valorTotal += valorActual;
-//    }
-//
-//    printf("Valor total de la cartera: %.2f\n", valorTotal);
-//    return valorTotal;
-//}
+
 float obtenerPrecioActual(const char* id_ticker) {
     for (int k = 0; k < numEmpresas; k++) {
         if (strcmp(listaEmpresas[k].id_ticker, id_ticker) == 0) {
@@ -66,54 +51,6 @@ double sumarValoresActuales(int clienteIndex) {
 
     return sumaValorActual;
 }
-// Nueva función para obtener el valor total de la cartera de un cliente
-//float obtenerValorCarteraCliente(int clienteIndex) {
-//    // Verificar si el cliente tiene inversiones
-//    if (listaClientes[clienteIndex].num_inversiones == 0) {
-//        printf("El cliente no tiene inversiones en su portafolio.\n");
-//        return 0.0f;  // Retornar 0 si no hay inversiones
-//    }
-//
-//    // Llamar a la función calcularValorCartera
-//    return calcularValorCartera(listaClientes[clienteIndex].inversiones, listaClientes[clienteIndex].num_inversiones);
-//}
-
-
-//rendimiientos historicos:
-
-
-
-
-// Función para agregar el histórico del valor de la cartera
-//void registrarRendimientoHistorico(Cliente *cliente) {
-//    float valorActual = 0.0;
-//    for (int i = 0; i < cliente->num_inversiones; i++) {
-//        // Aquí, podrías recorrer las inversiones y sumar el valor de cada una
-//        valorActual += calcularValorCartera(*cliente); // Ajusta según cómo calcules el valor de la cartera
-//    }
-//
-//    // Suponiendo que tienes una función para obtener la fecha actual en formato "YYYY-MM-DD"
-//    char fechaActual[11];
-//    obtenerFechaActual(fechaActual);
-//
-//    // Registra el valor actual en cada empresa asociada
-//    for (int j = 0; j < cliente->num_inversiones; j++) {
-//        Empresa *empresa = obtenerEmpresa(cliente->inversiones[j].id_ticker);
-//        agregarPrecioHistorico(empresa, fechaActual, valorActual);
-//    }
-//}
-
-// Función para agregar un nuevo precio histórico
-//void agregarPrecioHistorico(Empresa *empresa, const char *fecha, float precio) {
-//    if (empresa->num_historico < MAX_HISTORICO) {
-//        strcpy(empresa->historico[empresa->num_historico].fecha, fecha);
-//        empresa->historico[empresa->num_historico].precio = precio;
-//        empresa->num_historico++;
-//    } else {
-//        printf("Se ha alcanzado el máximo de precios históricos para la empresa %s.\n", empresa->id_ticker);
-//    }
-//}
-
 
 
 /// broker
@@ -163,4 +100,78 @@ int validarCuitCliente() {
 
     printf("CUIT no encontrado.\n");
     return -1; // No se encontró un cliente con el CUIT ingresado
+}
+
+
+///
+///
+float obtenerValorCarteraHistorico(float precio_compra) {
+    float porcentaje_maximo = 0.05; // 5% de variación máxima
+    float cambio = (float)rand() / RAND_MAX * 2 * porcentaje_maximo - porcentaje_maximo;
+    return precio_compra + (precio_compra * cambio);
+}
+
+// Función para mostrar el rendimiento histórico de la cartera
+void rendimientoHistoricoCartera(int clienteIndex) {
+    printf("Operaciones del cliente %s:\n", listaClientes[clienteIndex].nombre);
+    printf("-------------------------------------------------------------------------------\n");
+    printf("ID Ticker    | Cantidad de Acciones | Precio Compra | Fecha       | Valor Cartera\n");
+    printf("-------------------------------------------------------------------------------\n");
+
+    for (int i = 0; i < listaClientes[clienteIndex].num_inversiones; i++) {
+        Inversion inv = listaClientes[clienteIndex].inversiones[i];
+        float valor_actualizado = obtenerValorCarteraHistorico(inv.precio_compra) * inv.cantidad_acciones;
+
+        printf("%-12s | %-20d | %-13.2f | %-10s | %-13.2f\n",
+               inv.id_ticker, inv.cantidad_acciones, inv.precio_compra, inv.fecha, valor_actualizado);
+    }
+}
+
+
+float calcularCambioPorcentualCartera(int clienteIndex, int periodo) {
+    // Definimos la cantidad de días según el periodo (7 para semanal, 30 para mensual, 365 para anual)
+    int dias = 0;
+    switch (periodo) {
+        case 1: dias = 7; break;      // Semanal
+        case 2: dias = 30; break;     // Mensual
+        case 3: dias = 365; break;    // Anual
+        default: return 0;            // Valor inválido, retorna 0
+    }
+
+    // Calculo del valor inicial y final para el periodo
+    float valor_inicial = 0, valor_final = 0;
+    for (int i = 0; i < listaClientes[clienteIndex].num_inversiones; i++) {
+        Inversion inv = listaClientes[clienteIndex].inversiones[i];
+        valor_inicial += inv.precio_compra * inv.cantidad_acciones;
+
+        // Calculo del valor ajustado al final del periodo con la función `obtenerValorCarteraHistorico`
+        valor_final += obtenerValorCarteraHistorico(inv.precio_compra) * inv.cantidad_acciones;
+    }
+
+    // Calculo del cambio porcentual
+    float cambio_porcentual = ((valor_final - valor_inicial) / valor_inicial) * 100;
+    return cambio_porcentual;
+}
+
+
+
+
+void filtrarInversionesPorTicker(char* buscarPorTicker) {
+    printf("Inversiones con Ticker ID '%s':\n", buscarPorTicker);
+    printf("-------------------------------------------------------------------------------\n");
+    printf("Cliente       | Ticker ID    | Cantidad de Acciones | Precio Compra | Fecha\n");
+    printf("-------------------------------------------------------------------------------\n");
+
+    for (int i = 0; i < numClientes; i++) {
+        Cliente cliente = listaClientes[i];
+
+        for (int j = 0; j < cliente.num_inversiones; j++) {
+            Inversion inv = cliente.inversiones[j];
+
+            if (strcmp(inv.id_ticker, buscarPorTicker) == 0) {
+                printf("%-12s | %-12s | %-20d | %-13.2f | %-10s\n",
+                       cliente.nombre, inv.id_ticker, inv.cantidad_acciones, inv.precio_compra, inv.fecha);
+            }
+        }
+    }
 }

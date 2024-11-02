@@ -418,18 +418,27 @@ void verRendimiento(int clienteIndex, Empresa empresas[], int num_empresas) {
 
     switch(opcion) {
         case 1: {
-            //tengo que agregar para mostrar el cambio de valor diario, hasta ahora solo tengo el cambio de valor  porcentual;
-            //convedria hacerlo directamente dentro las fuciones y no pdir un return, por que quiero mostrar dos valores.
+            // Llama a la función de rendimiento diario
             calcularRendimientoDiario(&listaClientes[clienteIndex], empresas, num_empresas);
             break;
         }
         case 2: {
-            char fecha[11];
-            printf("Ingrese la fecha (YYYY-MM-DD): ");
-            scanf("%s", fecha);
+            int periodo;
+            printf("Seleccione el periodo:\n");
+            printf("1. Semanal\n");
+            printf("2. Mensual\n");
+            printf("3. Anual\n");
+            printf("Seleccione una opcion: ");
+            scanf("%d", &periodo);
 
-            float rendimiento_hist = calcularRendimientoHistorico(&listaClientes[clienteIndex], empresas, num_empresas, fecha);
-            printf("Rendimiento Historico al %s: %.2f%%\n", fecha, rendimiento_hist);
+            // Llama a la función para calcular el porcentaje de cambio histórico
+            float cambio_porcentual = calcularCambioPorcentualCartera(clienteIndex, periodo);
+            printf("Porcentaje de cambio en el valor de la cartera (%s): %.2f%%\n",
+                   (periodo == 1) ? "semanal" : (periodo == 2) ? "mensual" : "anual",
+                   cambio_porcentual);
+
+            // Mostrar rendimiento histórico
+            rendimientoHistoricoCartera(clienteIndex);
             break;
         }
         default:
