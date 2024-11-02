@@ -5,21 +5,18 @@
 #include "constantes.h"
 
 
-//
 void mostrarMenuBroker();
 void menuBroker();
 
 //funcionalidades
 void altaCliente();
-void bajaCliente(); //borrar
+void bajaCliente();
 void modificarCliente();
 
 void altaEmpresa();
 void mostrarEmpresas();
 void bajaEmpresa();
 void modificarEmpresa();
-
-
 
 
 #endif // MENUBROKER_H_INCLUDED

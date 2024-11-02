@@ -7,6 +7,7 @@ extern Cliente listaClientes[MAX_CLIENTES];
 void login();
 void loginValidation(int role );
 
+// Implementación de la función de login
 void login()
 {
     int role;
@@ -37,6 +38,7 @@ void login()
 }
 
 
+//
 // Implementación de la función loginValidation
 void loginValidation(int role)
 {
@@ -64,14 +66,14 @@ void loginValidation(int role)
     }
 }
 
-
-// validar las credenciales del cliente
+// Función para validar las credenciales del cliente
+// Función para validar las credenciales del cliente
 int validarCliente()
 {
     char email[50];
     char password[20];
 
-    // Solicita datos para la validacion
+    // Solicitar el email y contraseña del cliente
     printf("Ingrese su email: ");
     scanf("%s", email);
     printf("Ingrese su contraseña: ");

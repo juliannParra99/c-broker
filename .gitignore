@@ -8,6 +8,9 @@
 *.exe
 *.out
 
+broker-exchange/*.depend
+broker-exchange/*.layout
+
 # Build directories
 /build/
 /bin/

@@ -17,15 +17,15 @@ void menuCliente(int clienteIndex) {
     int opcion;
 
     do {
-        printf("\n--- Menú Cliente ---\n");
+        printf("\n--- Menu Cliente ---\n");
         printf("SALDO ACTUAL: %.2f \n", listaClientes[clienteIndex].saldo_cuenta );
-        printf("1. Realizar inversión\n");
+        printf("1. Realizar inversion\n");
         printf("2. Ver rendimiento\n");
         printf("3. Cargar saldo:\n");
         printf("4. Extraer saldo\n");
         printf("5. Ver portafolio\n");
-        printf("6. Volver al menú principal\n");
-        printf("Seleccione una opción: ");
+        printf("6. Volver al menu principal\n");
+        printf("Seleccione una opcion: ");
         scanf("%d", &opcion);
 
         switch(opcion) {
@@ -48,7 +48,7 @@ void menuCliente(int clienteIndex) {
                 printf("Volviendo al menú principal...\n");
                 break;
             default:
-                printf("Opción inválida. Intente de nuevo.\n");
+                printf("Opcion invalida. Intente de nuevo.\n");
         }
     } while (opcion != 6);
 }
@@ -57,12 +57,12 @@ void menuCliente(int clienteIndex) {
 void realizarInversion(int clienteIndex) {
     int subopcion;
     do {
-        printf("\n--- Realizar Inversión ---\n");
+        printf("\n--- Realizar Inversion ---\n");
         printf("1. Mostrar listado de empresas disponibles\n");
         printf("2. Comprar acciones\n");
         printf("3. Vender acciones\n");
-        printf("4. Volver al menú del cliente\n");
-        printf("Selecciona una opción: ");
+        printf("4. Volver al menu del cliente\n");
+        printf("Selecciona una opcion: ");
         scanf("%d", &subopcion);
 
         switch(subopcion) {
@@ -76,10 +76,10 @@ void realizarInversion(int clienteIndex) {
                 venderAcciones(clienteIndex);
                 break;
             case 4:
-                printf("Volviendo al menú de cliente...\n");
+                printf("Volviendo al menu de cliente...\n");
                 break;
             default:
-                printf("Opción no válida. Inténtalo nuevamente.\n");
+                printf("Opcion no valida. Intentalo nuevamente.\n");
         }
     } while (subopcion != 4);
 }
@@ -126,7 +126,7 @@ void comprarAcciones(int clienteIndex) {
 
                 // Actualizar el saldo del cliente
                 listaClientes[clienteIndex].saldo_cuenta -= precioTotal;
-                printf("Compra realizada con éxito.\n");
+                printf("Compra realizada con exito.\n");
             } else {
                 printf("Saldo insuficiente para realizar la compra.\n");
             }
@@ -187,7 +187,7 @@ void venderAcciones(int clienteIndex) {
                             listaClientes[clienteIndex].num_inversiones--;  // Reducir el número de inversiones
                         }
 
-                        printf("Venta realizada con éxito. Se acreditaron %.2f a su cuenta.\n", precioTotal);
+                        printf("Venta realizada con exito. Se acreditaron %.2f a su cuenta.\n", precioTotal);
                     } else {
                         printf("No tiene suficientes acciones para vender.\n");
                     }
@@ -291,7 +291,7 @@ void comprarVenderAcciones() {
     } else if (opcion == 2) {
         venderAcciones(0);
     } else {
-        printf("Opción no válida.\n");
+        printf("Opcion no valida.\n");
     }
 }
 
@@ -308,7 +308,7 @@ void cargarSaldo(int indiceCliente) {
 
     if (monto > 0) {
         listaClientes[indiceCliente].saldo_cuenta += monto;
-        printf("Saldo cargado con éxito. Su saldo actual es: %.2f\n", listaClientes[indiceCliente].saldo_cuenta);
+        printf("Saldo cargado con exito. Su saldo actual es: %.2f\n", listaClientes[indiceCliente].saldo_cuenta);
     } else {
         printf("El monto debe ser mayor a cero.\n");
     }
@@ -442,6 +442,6 @@ void verRendimiento(int clienteIndex, Empresa empresas[], int num_empresas) {
             break;
         }
         default:
-            printf("Opcion inválida. Intente de nuevo.\n");
+            printf("Opcion invalida. Intente de nuevo.\n");
     }
 }

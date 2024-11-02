@@ -7,13 +7,6 @@
 #include <string.h>
 
 
-//// Ejemplos demostracion
-void empresaAgregarModificarBorrar();
-void ejemploComprarCargarExtraerSaldo();
-
-////
-
-
 // Arreglo de clientes
 Cliente listaClientes[MAX_CLIENTES];
 Empresa listaEmpresas[MAX_EMPRESAS];
@@ -113,48 +106,10 @@ int main()
 
 
     login();
-    //menuBroker();
-
-    //empresaAgregarModificarBorrar();
-    //mostrarClientes();
-    //mostrarEmpresas();
-    //bajaCliente();
-    //modificarCliente();
-    //mostrarClientes();
 
     return 0;
 }
 
-/////////////////
-///////////////
-//Ejemplos
-void empresaAgregarModificarBorrar()
-{
-    for(int i = 0; i<3; i++)
-    {
-        //altaCliente();
-        altaEmpresa();
-
-    }
-    mostrarEmpresas();
-    modificarEmpresa();
-    mostrarEmpresas();
-    bajaEmpresa();
-    mostrarEmpresas();
-}
-
-//Ejemplo :
-void ejemploComprarCargarExtraerSaldo()
-{
-     // Muestra de datos
-    mostrarClientes();
-    mostrarEmpresas();
-    comprarVenderAcciones();
-    mostrarClientes();
-    cargarSaldo(0);
-    mostrarClientes();
-    extraerSaldo(0);
-}
 
 
 

@@ -22,18 +22,17 @@ void *obtenerMemoria(size_t size)
 // Función que recibe un string y devuelve una copia en memoria dinámica
 char *stringDinamico(char *origen) {
 
-    // Verificar si el origen no es NULL
     if (origen == NULL) {
         printf("Error: String de origen es NULL.\n");
         exit(1);  // Salir con código de error
     }
-    // Calcular el tamaño del string, incluyendo el espacio para '\0'
+
     size_t longitud = strlen(origen) + 1;
 
     // Reservar memoria para la copia
     char *copia = (char *)obtenerMemoria(longitud * sizeof(char));
 
-    // Verificar si la memoria fue asignada correctamente
+    // Verificar si la memo fue asignada correctamente
     if (copia == NULL) {
         printf("Error al solicitar memoria\n");
         exit(1);
@@ -45,7 +44,7 @@ char *stringDinamico(char *origen) {
 }
 
 void liberar_memoria(void *puntero) {
-    free(puntero);  // Liberar la memoria asignada
+    free(puntero);
     printf("Memoria liberada correctamente\n");
 }
 

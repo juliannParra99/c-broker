@@ -7,7 +7,7 @@
 
 
 //variables:
-extern Cliente listaClientes[]; // Declarar externamente las variables globales
+extern Cliente listaClientes[];
 extern Empresa listaEmpresas[];
 extern int numClientes;
 extern int numEmpresas;
@@ -16,25 +16,21 @@ extern int numEmpresas;
 void altaCliente() {
     //verifica si se alcanzo el macimo de clientes
     if (numClientes >= MAX_CLIENTES) {
-        printf("No se pueden agregar más clientes, límite alcanzado.\n");
+        printf("No se pueden agregar más clientes, limite alcanzado.\n");
         return;
     }
 
     Cliente nuevoCliente;
 
-    // Solicitar el nombre del cliente
     printf("Ingrese el nombre del cliente: ");
     scanf("%s", nuevoCliente.nombre);
 
-    // Solicitar el email del cliente
     printf("Ingrese el email del cliente: ");
     scanf("%s", nuevoCliente.email);
 
-    // Solicitar el CUIT del cliente
     printf("Ingrese el CUIT del cliente: ");
     scanf("%s", nuevoCliente.cuit);
 
-    // contraseña
     printf("Ingrese la contraseña del cliente: ");
     scanf("%s", nuevoCliente.password);
 
@@ -54,7 +50,7 @@ void altaCliente() {
     listaClientes[numClientes] = nuevoCliente;
     numClientes++;
 
-    printf("Cliente agregado con éxito.\n");
+    printf("Cliente agregado con exito.\n");
 }
 
 ///------------------------------------------------------------
@@ -130,7 +126,7 @@ void modificarCliente() {
                 listaClientes[i].saldo_cuenta = nuevoSaldo;
             }
 
-            printf("Cliente modificado con éxito.\n");
+            printf("Cliente modificado con exito.\n");
             break;
         }
     }
@@ -160,7 +156,7 @@ void bajaCliente() {
             }
 
             numClientes--; // Disminuir el contador de clientes
-            printf("Cliente eliminado con éxito.\n");
+            printf("Cliente eliminado con exito.\n");
             break;
         }
     }
@@ -176,7 +172,7 @@ void altaEmpresa()
 {
     //verifica si se alcanzo el macimo de clientes
     if (numEmpresas >= MAX_EMPRESAS) {
-        printf("No se pueden agregar más empresas, límite alcanzado.\n");
+        printf("No se pueden agregar mas empresas, límite alcanzado.\n");
         return;
     }
 
@@ -206,7 +202,7 @@ void altaEmpresa()
     listaEmpresas[numEmpresas] = nuevaEmpresa;
     numEmpresas++;
 
-    printf("Empresa agregada con éxito.\n");
+    printf("Empresa agregada con exito.\n");
 }
 
 void mostrarEmpresas()
@@ -249,7 +245,7 @@ void bajaEmpresa()
             }
 
             numEmpresas--; // Disminuir el contador de clientes
-            printf("Empresa eliminada con éxito.\n");
+            printf("Empresa eliminada con exito.\n");
             break;
         }
     }
@@ -320,7 +316,7 @@ void modificarEmpresa()
             }
 
             // Confirmar que los datos han sido actualizados
-            printf("Empresa modificada con éxito.\n");
+            printf("Empresa modificada con exito.\n");
 
             // Salir del bucle ya que hemos encontrado y modificado la empresa
             break;
@@ -335,13 +331,12 @@ void modificarEmpresa()
 
 
 
-///------------------------------------
 void menuBroker() {
     int opcion;
     char idTicker[10];
     do {
         mostrarMenuBroker();
-        printf("\nSelecciona una opción: ");
+        printf("\nSelecciona una opcion: ");
         scanf("%d", &opcion);
 
         switch(opcion) {
@@ -382,28 +377,28 @@ void menuBroker() {
                 mostrarEmpresas();
                 break;
             case 11:
-                printf("Volviendo al menú principal...\n");
+                printf("Volviendo al menu principal...\n");
                 break;
             default:
-                printf("Opción no válida. Inténtalo nuevamente.\n");
+                printf("Opcion no valida. Intentalo nuevamente.\n");
         }
     } while (opcion != 11);
 }
 
 // Función que muestra el menú del broker
 void mostrarMenuBroker() {
-    printf("\n--- Menú de Broker ---\n");
+    printf("\n--- Menu de Broker ---\n");
     printf("1. Alta de clientes\n");
     printf("2. Baja de clientes\n");
-    printf("3. Modificación de clientes\n");
+    printf("3. Modificacion de clientes\n");
     printf("4. Alta de empresas\n");
     printf("5. Baja de empresas\n");
-    printf("6. Modificación de empresas\n");
+    printf("6. Modificacion de empresas\n");
     printf("7. Filtrar operaciones por cliente\n");
     printf("8. Filtrar operaciones por ID ticker\n");
     printf("9. Mostrar Clientes\n");
     printf("10. Mostrar Empresas\n");
-    printf("11. Volver al menú principal\n");
+    printf("11. Volver al menu principal\n");
 
 
 }

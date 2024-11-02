@@ -4,7 +4,7 @@
 #include <time.h>
 #include "structs.h"
 
-extern Cliente listaClientes[MAX_CLIENTES]; // Declaración de listaClientes como variable externa
+extern Cliente listaClientes[MAX_CLIENTES];
 extern Empresa listaEmpresas[];
 extern int numClientes;
 extern int numEmpresas;
@@ -129,13 +129,13 @@ void rendimientoHistoricoCartera(int clienteIndex) {
 
 
 float calcularCambioPorcentualCartera(int clienteIndex, int periodo) {
-    // Definimos la cantidad de días según el periodo (7 para semanal, 30 para mensual, 365 para anual)
+    //días sgún el periodo (7 para semanal, 30 para mensual, 365 para anual)
     int dias = 0;
     switch (periodo) {
         case 1: dias = 7; break;      // Semanal
         case 2: dias = 30; break;     // Mensual
         case 3: dias = 365; break;    // Anual
-        default: return 0;            // Valor inválido, retorna 0
+        default: return 0;            // inválido, retorna 0
     }
 
     // Calculo del valor inicial y final para el periodo
