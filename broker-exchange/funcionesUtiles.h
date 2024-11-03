@@ -25,6 +25,7 @@ void rendimientoHistoricoCartera(int clienteIndex);
 float calcularCambioPorcentualCartera(int clienteIndex, int periodo);
 void filtrarInversionesPorTicker(char* buscarPorTicker);
 
+int compararFechas(const void* a, const void* b);
 
 //aca van ir funciones de ordenamiento y relacionadas  a  funciones de modificar de manera random el precio de
 //las empresas al iniciar la app.

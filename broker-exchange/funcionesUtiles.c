@@ -112,19 +112,45 @@ float obtenerValorCarteraHistorico(float precio_compra) {
 }
 
 // Función para mostrar el rendimiento histórico de la cartera
+// Función para comparar las fechas de las inversiones
+int compararFechas(const void* a, const void* b) {
+    const Inversion* invA = (const Inversion*)a;
+    const Inversion* invB = (const Inversion*)b;
+    return strcmp(invA->fecha, invB->fecha); // Orden ascendente por fecha
+}
+
 void rendimientoHistoricoCartera(int clienteIndex) {
+    // Ordenar las inversiones por fecha de menor a mayor
+    qsort(listaClientes[clienteIndex].inversiones, listaClientes[clienteIndex].num_inversiones, sizeof(Inversion), compararFechas);
+
     printf("Operaciones del cliente %s:\n", listaClientes[clienteIndex].nombre);
     printf("-------------------------------------------------------------------------------\n");
     printf("ID Ticker    | Cantidad de Acciones | Precio Compra | Fecha       | Valor Cartera\n");
     printf("-------------------------------------------------------------------------------\n");
 
+    float valor_cartera = 0.0;
+
     for (int i = 0; i < listaClientes[clienteIndex].num_inversiones; i++) {
         Inversion inv = listaClientes[clienteIndex].inversiones[i];
-        float valor_actualizado = obtenerValorCarteraHistorico(inv.precio_compra) * inv.cantidad_acciones;
+        float valor_inicial = inv.cantidad_acciones * inv.precio_compra;
+
+        // Para la primera compra, simplemente se establece el valor de la cartera
+        if (i == 0) {
+            valor_cartera = valor_inicial;
+        } else {
+            // Aplica un cambio aleatorio solo después de la primera compra
+            float cambio = (float)rand() / RAND_MAX * 0.02 - 0.01; // +/- 1% de variación
+            valor_cartera += valor_inicial * (1 + cambio);
+        }
 
         printf("%-12s | %-20d | %-13.2f | %-10s | %-13.2f\n",
-               inv.id_ticker, inv.cantidad_acciones, inv.precio_compra, inv.fecha, valor_actualizado);
+               inv.id_ticker, inv.cantidad_acciones, inv.precio_compra, inv.fecha, valor_cartera);
     }
+
+    // Ajusta el valor final de la cartera al total actual
+    double totalValoresActuales = sumarValoresActuales(clienteIndex);
+    printf("-------------------------------------------------------------------------------\n");
+    printf("Valor total de la cartera actual: %.2f\n", totalValoresActuales);
 }
 
 
