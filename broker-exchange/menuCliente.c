@@ -11,7 +11,6 @@ extern int numClientes;
 extern int numEmpresas;
 
 
-
 // Función del menú del Cliente
 void menuCliente(int clienteIndex) {
     int opcion;
@@ -64,6 +63,11 @@ void realizarInversion(int clienteIndex) {
         printf("4. Volver al menu del cliente\n");
         printf("Selecciona una opcion: ");
         scanf("%d", &subopcion);
+
+        if (subopcion == 2 && listaClientes[clienteIndex].num_inversiones >= MAX_INVERSIONES) {
+            printf("No puede realizar más inversiones, límite alcanzado.\n");
+            continue;  // Volver al menú de inversión sin intentar realizar la compra
+        }
 
         switch(subopcion) {
             case 1:

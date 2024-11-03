@@ -44,7 +44,7 @@ void loginValidation(int role)
     switch(role) {
         case 1: {
             int brokerInfo = validarBroker();
-            if ( brokerInfo >= 0) {
+            if ( brokerInfo == 1) {
                 printf("Bienvenido Broker\n");
                 menuBroker();
             } else {
