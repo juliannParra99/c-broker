@@ -11,7 +11,7 @@ extern int numEmpresas;
 
 void inicializar_aleatoriedad() {
 
-    srand(time(NULL)); // Utiliza la hora actual como semilla
+    srand(time(NULL));
 
 }
 
@@ -32,7 +32,7 @@ float obtenerPrecioActual(const char* id_ticker) {
             return listaEmpresas[k].precio_actual;
         }
     }
-    return 0.0; // Retornar 0.0 si no se encuentra la empresa (manejo de error simple)
+    return 0.0;
 }
 
 double sumarValoresActuales(int clienteIndex) {
@@ -199,5 +199,29 @@ void filtrarInversionesPorTicker(char* buscarPorTicker) {
                        cliente.nombre, inv.id_ticker, inv.cantidad_acciones, inv.precio_compra, inv.fecha);
             }
         }
+    }
+}
+
+
+void calcularGanancia(int clienteIndex) {
+    double totalValoresActuales = sumarValoresActuales(clienteIndex);
+    double sumaValoresCompra = 0.0;
+
+    // Sumar los valores de compra de todas las inversiones
+    for (int i = 0; i < listaClientes[clienteIndex].num_inversiones; i++) {
+        Inversion inv = listaClientes[clienteIndex].inversiones[i];
+        sumaValoresCompra += inv.cantidad_acciones * inv.precio_compra;
+    }
+
+    // Calcular la ganancia
+    double ganancia = totalValoresActuales - sumaValoresCompra;
+
+
+    if (ganancia > 0) {
+        printf("Ganancia: +%.2f\n", ganancia);
+    } else if (ganancia < 0) {
+        printf("Perdida: %.2f\n", ganancia);
+    } else {
+        printf("Ganancia: 0.00 (sin cambios)\n");
     }
 }

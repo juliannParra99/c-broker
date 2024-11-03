@@ -6,6 +6,7 @@ extern Cliente listaClientes[MAX_CLIENTES];
 
 void login();
 void loginValidation(int role );
+int validarBroker();
 
 void login()
 {
@@ -41,15 +42,21 @@ void login()
 void loginValidation(int role)
 {
     switch(role) {
-        case 1:
-            printf("Bienvenido Broker\n");
-            menuBroker(); // Si es Admin, ejecutar el menú del Broker
+        case 1: {
+            int brokerInfo = validarBroker();
+            if ( brokerInfo >= 0) {
+                printf("Bienvenido Broker\n");
+                menuBroker();
+            } else {
+                printf("Error: Email o contraseña incorrectos.\n");
+            }
             break;
+        }
         case 2: {
             int clienteIndex = validarCliente();
-            if (clienteIndex >= 0) { // Si el cliente es validado correctamente
+            if (clienteIndex >= 0) {
                 printf("Bienvenido Cliente\n");
-                menuCliente(clienteIndex); // Pasar el índice del cliente validado
+                menuCliente(clienteIndex);
             } else {
                 printf("Error: Email o contraseña incorrectos.\n");
             }
@@ -57,7 +64,7 @@ void loginValidation(int role)
         }
         case 3:
             printf("Saliendo...\n");
-            exit(0); // Finalizar el programa si elige salir
+            exit(0);
             break;
         default:
             printf("Opción inválida.\n");
@@ -87,5 +94,30 @@ int validarCliente()
 
     return -1; // Login fallido
 }
+
+int validarBroker() {
+    char email[50];
+    char password[20];
+
+    // Credenciales del broker
+    const char brokerEmail[] = "admin@gmail.com";
+    const char brokerPassword[] = "admin";
+
+    // Solicitar datos para la validación
+    printf("Ingrese su email: ");
+    scanf("%s", email);
+    printf("Ingrese su contraseña: ");
+    scanf("%s", password);
+
+    // Validar credenciales del broker
+    if (strcmp(email, brokerEmail) == 0 && strcmp(password, brokerPassword) == 0) {
+        printf("Login exitoso para el broker\n");
+        return 1; // Login exitoso
+    } else {
+        printf("Email o contraseña incorrectos. Acceso denegado.\n");
+        return 0; // Login fallido
+    }
+}
+
 
 #endif // INTERFACESGRAF_H_INCLUDED

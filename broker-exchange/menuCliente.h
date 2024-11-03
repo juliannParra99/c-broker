@@ -31,5 +31,5 @@ void verRendimiento(int clienteIndex, Empresa empresas[], int num_empresas);
 void rendimientoDiario();
 
 void rendimientoHistorico();
-
+void mostrarOpcionesHistoricas(int clienteIndex)
 #endif // MENUCLIENTE_H_INCLUDED

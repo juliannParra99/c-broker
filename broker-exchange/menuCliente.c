@@ -215,13 +215,13 @@ void verPortafolio(int clienteIndex) {
 
     double totalValoresActuales = sumarValoresActuales(clienteIndex);
     printf("\n");
-    printf("-------------------------------------------------------------------------------\n");
+    printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     printf("El valor de la cartera es de: %.2lf\n", totalValoresActuales);
 
-    printf("-------------------------------------------------------------------------------\n");
+    printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 
     printf("Listado de Activos del Cliente: %s\n", listaClientes[clienteIndex].nombre);
-    printf("-------------------------------------------------------------------------------\n");
+    printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     printf("%-10s %-20s %-15s %-15s %-15s %-15s %-15s %-15s %-15s\n",
            "ID Ticker", "Nombre Empresa", "Acciones", "Precio Compra",
            "Precio Actual", "Valor Compra", "Valor Actual",
@@ -275,7 +275,10 @@ void verPortafolio(int clienteIndex) {
                rendimientoValor, rendimientoPorcentaje);
     }
 
-    printf("-------------------------------------------------------------------------------\n");
+    printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    printf("\n");
+
+    calcularGanancia(clienteIndex);
 }
 
 
@@ -295,8 +298,7 @@ void comprarVenderAcciones() {
     }
 }
 
-////
-////
+
 ////
 ///
 //Cargar saldo, extraer saldo;
@@ -332,8 +334,6 @@ void extraerSaldo(int indiceCliente) {
 }
 
 //////////////////////////
-//////////////////////////
-/////////////////////////
 //Vista de rendimiento
 //
 void calcularRendimientoDiario(Cliente* cliente, Empresa empresas[], int num_empresas) {
@@ -413,6 +413,7 @@ void verRendimiento(int clienteIndex, Empresa empresas[], int num_empresas) {
     printf("\n--- Ver Rendimiento ---\n");
     printf("1. Rendimiento Diario\n");
     printf("2. Rendimiento Historico\n");
+    printf("3. Exit\n");
     printf("Seleccione una opcion: ");
     scanf("%d", &opcion);
 
@@ -423,25 +424,48 @@ void verRendimiento(int clienteIndex, Empresa empresas[], int num_empresas) {
             break;
         }
         case 2: {
-            int periodo;
-            printf("Seleccione el periodo:\n");
-            printf("1. Semanal\n");
-            printf("2. Mensual\n");
-            printf("3. Anual\n");
-            printf("Seleccione una opcion: ");
-            scanf("%d", &periodo);
-
-            // Llama a la función para calcular el porcentaje de cambio histórico
-            float cambio_porcentual = calcularCambioPorcentualCartera(clienteIndex, periodo);
-            printf("Porcentaje de cambio en el valor de la cartera (%s): %.2f%%\n",
-                   (periodo == 1) ? "semanal" : (periodo == 2) ? "mensual" : "anual",
-                   cambio_porcentual);
-
-            // Mostrar rendimiento histórico
-            rendimientoHistoricoCartera(clienteIndex);
+            mostrarOpcionesHistoricas(clienteIndex);
             break;
         }
+        case 3:{
+            break;
+        }
+
         default:
             printf("Opcion invalida. Intente de nuevo.\n");
+    }
+}
+
+
+void mostrarOpcionesHistoricas(int clienteIndex) {
+    int opcion;
+    printf("\n");
+    printf("Seleccione una opcion:\n");
+    printf("1. Ver valor historico de la cartera\n");
+    printf("2. Ver porcentaje de cambio histórico en diferentes periodos\n");
+    printf("Seleccione una opcion: ");
+    scanf("%d", &opcion);
+
+    if (opcion == 1) {
+        // Llama a la función para mostrar el rendimiento histórico
+        rendimientoHistoricoCartera(clienteIndex);
+    } else if (opcion == 2) {
+        // Pregunta al usuario por el periodo para el porcentaje de cambio
+        int periodo;
+        printf("\n");
+        printf("Seleccione el periodo:\n");
+        printf("1. Semanal\n");
+        printf("2. Mensual\n");
+        printf("3. Anual\n");
+        printf("Seleccione una opcion: ");
+        scanf("%d", &periodo);
+
+        // Llama a la función para calcular el porcentaje de cambio histórico
+        float cambio_porcentual = calcularCambioPorcentualCartera(clienteIndex, periodo);
+        printf("Porcentaje de cambio en el valor de la cartera (%s): %.2f%%\n",
+               (periodo == 1) ? "semanal" : (periodo == 2) ? "mensual" : "anual",
+               cambio_porcentual);
+    } else {
+        printf("Opción no válida.\n");
     }
 }
